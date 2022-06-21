@@ -9,8 +9,10 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2865" />
         <entry key="app/src/main/res/drawable/vie_bg.xml" value="0.236" />
         <entry key="app/src/main/res/drawable/vir_bg.xml" value="0.237" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.10169525146484376" />
+        <entry key="app/src/main/res/layout/activity_person.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.25" />
         <entry key="app/src/main/res/layout/login_tab.xml" value="0.2463768115942029" />
         <entry key="app/src/main/res/layout/login_tab_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/signup.xml" value="0.2463768115942029" />

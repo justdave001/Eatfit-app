@@ -7,8 +7,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class SignupTabFragment extends Fragment {
     EditText username;
@@ -27,6 +32,31 @@ public class SignupTabFragment extends Fragment {
         signup_pass = root.findViewById(R.id.signup_pass);
 //        signup_pass2 = root.findViewById(R.id.signup_pass2);
         signupBtn = root.findViewById(R.id.signupBtn);
+
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!username.getText().toString().isEmpty() && !signup_pass.getText().toString().isEmpty()){
+                    ParseUser user = new ParseUser();
+                    user.setUsername(username.getText().toString());
+                    user.setPassword(username.getText().toString());
+                    user.signUpInBackground(new SignUpCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null){
+                                Toast.makeText(getContext(), "Sign up successful!", Toast.LENGTH_SHORT).show();
+                                username.setText("");
+                                f_name.setText("");
+                                l_name.setText("");
+                                signup_pass.setText("");
+                            } else {
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
         username.setTranslationX(800);
         f_name.setTranslationX(800);

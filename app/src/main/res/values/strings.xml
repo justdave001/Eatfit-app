@@ -4,4 +4,8 @@
     <string name="back4app_app_id">6WMl51PwlFcu27RAKte2XHnSq4OM9GXxf9I0LxJi</string>
     <string name="back4app_client_key">ALch2Wb82Vv5yQ553yHHHoPVcSpKLu9ArV5s7EVN</string>
 
+    <string name="facebook_app_id">795442988506579</string>
+    <string name="fb_login_protocol_scheme">fb795442988506579</string>
+    <string name="facebook_client_token">a49f9c5b45deb3c1ebf197d9531c444a</string>
+
 </resources>
