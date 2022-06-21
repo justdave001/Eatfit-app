@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Eatfit</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">6WMl51PwlFcu27RAKte2XHnSq4OM9GXxf9I0LxJi</string>
+    <string name="back4app_client_key">ALch2Wb82Vv5yQ553yHHHoPVcSpKLu9ArV5s7EVN</string>
+
+</resources>
