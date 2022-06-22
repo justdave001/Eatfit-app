@@ -258,7 +258,6 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<HashMap<String, String>> hashMaps) {
-            //clear map
             mMap.clear();
             //add yo hashmap
             for (int i=0; i<hashMaps.size();i++){
