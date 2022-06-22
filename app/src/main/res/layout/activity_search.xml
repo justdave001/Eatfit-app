@@ -6,16 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
 
-
-    <ImageView
-        android:id="@+id/restaurant"
-        android:layout_width="70dp"
-        android:layout_height="87dp"
-        android:padding="3dp"
-        android:src="@drawable/restaurant_icon"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/find_res"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/google_map"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/sp_type"
+            android:background="#D3D3D3"/>
+
+        <ImageView
+            android:id="@+id/findBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#ACCF83"
+            android:src="@drawable/find" />
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigator"
@@ -35,6 +50,6 @@
         android:layout_height="590dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant"
+        app:layout_constraintTop_toBottomOf="@+id/find_res"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
