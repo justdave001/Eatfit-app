@@ -264,7 +264,7 @@ public class SearchActivity extends AppCompatActivity {
             for (int i=0; i<hashMaps.size();i++){
                 //initialize hashmap
                 HashMap<String,String> hashMapList = hashMaps.get(i);
-                //get latitude and long
+                //get latitude and lng
                 double lat = Double.parseDouble(hashMapList.get("lat"));
                 double lng  = Double.parseDouble(hashMapList.get("lng"));
 
