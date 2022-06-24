@@ -41,4 +41,11 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:14.0.0'
     implementation  'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
+    implementation 'com.github.parse-community.ParseUI-Android:widget:0.0.6'
 }

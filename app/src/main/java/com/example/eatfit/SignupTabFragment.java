@@ -20,6 +20,7 @@ public class SignupTabFragment extends Fragment {
     EditText f_name;
     EditText l_name;
     EditText signup_pass;
+    TextView firstName;
     EditText signup_pass2;
     Button signupBtn;
     float o =0;
@@ -32,23 +33,28 @@ public class SignupTabFragment extends Fragment {
         signup_pass = root.findViewById(R.id.signup_pass);
 //        signup_pass2 = root.findViewById(R.id.signup_pass2);
         signupBtn = root.findViewById(R.id.signupBtn);
+        firstName = root.findViewById(R.id.firstName);
 
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(!username.getText().toString().isEmpty() && !signup_pass.getText().toString().isEmpty()){
                     ParseUser user = new ParseUser();
                     user.setUsername(username.getText().toString());
-                    user.setPassword(username.getText().toString());
+                    user.setPassword(signup_pass.getText().toString());
+
                     user.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null){
                                 Toast.makeText(getContext(), "Sign up successful!", Toast.LENGTH_SHORT).show();
+
                                 username.setText("");
                                 f_name.setText("");
                                 l_name.setText("");
                                 signup_pass.setText("");
+
                             } else {
                                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                             }

@@ -24,7 +24,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -48,6 +51,7 @@ public class SearchActivity extends AppCompatActivity {
     public BottomNavigationView bottomNavigationView;
     Spinner sp_type;
     ImageView findBtn;
+    Location myLocation;
     GoogleMap mMap;
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -96,8 +100,10 @@ public class SearchActivity extends AppCompatActivity {
                 "&sensor=true" +
                 "&key=" + getResources().getString(R.string.google_map_key);
 
+
                 //place task method to download json data
                 new PlaceTask().execute(url);
+
             }
         });
 
@@ -166,6 +172,16 @@ public class SearchActivity extends AppCompatActivity {
                                     new LatLng(currentLat,currentLong), 13
 
                             ));
+                            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.location);
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLat,currentLong),13));
+                            MarkerOptions options = new MarkerOptions();
+                            //set position
+                            options.position(new LatLng(currentLat, currentLong));
+                            //set title
+                            options.title("you");
+                            options.icon(icon);
+                            //add marker on map
+                            mMap.addMarker(options);
                         }
                     });
 
@@ -252,8 +268,10 @@ public class SearchActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             //return map list
             return mapList;
+
         }
 
         @Override
@@ -271,15 +289,70 @@ public class SearchActivity extends AppCompatActivity {
                 String name = hashMapList.get("name");
                 //join lat and long
                 LatLng latLng = new LatLng(lat, lng);
+
                 //initialize marker options
                 MarkerOptions options = new MarkerOptions();
                 //set position
                 options.position(latLng);
                 //set title
                 options.title(name);
+
                 //add marker on map
                 mMap.addMarker(options);
+                BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.location);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLat,currentLong),13));
+                MarkerOptions newoptions = new MarkerOptions();
+                //set position
+                newoptions.position(new LatLng(currentLat, currentLong));
+                //set title
+                newoptions.title("you");
+                newoptions.icon(icon);
+                //add marker on map
+                mMap.addMarker(newoptions);
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(@NonNull Marker marker) {
+                        String markerList = marker.getTitle();
+
+                        Intent i =new Intent(SearchActivity.this, DetailsActivity.class);
+                        i.putExtra("title", markerList);
+                        startActivity(i);
+
+                        return false;
+                    }
+                });
+
+
+
+
+
+
             }
         }
     }
+//    @Override
+//    public void onLocationChanged(Location location){
+//        myLocation = location;
+//        if (myLocation!=null){
+//            currentLat = location.getLatitude();
+//            currentLong = location.getLongitude();
+//
+//            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.location);
+//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLat,currentLong),13));
+//            MarkerOptions options = new MarkerOptions();
+//            //set position
+//            options.position(new LatLng(currentLat, currentLong));
+//            //set title
+//            options.title("you");
+//            options.icon(icon);
+//            //add marker on map
+//            mMap.addMarker(options);
+//
+//            getNearby();
+//        }
+//
+//    }
+//
+//    private void getNearby() {
+//    }
 }
