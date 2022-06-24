@@ -63,7 +63,7 @@
         android:layout_width="153dp"
         android:layout_height="143dp"
         android:layout_marginTop="48dp"
-        android:src="@drawable/david"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
