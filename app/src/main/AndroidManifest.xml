@@ -3,10 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.eatfit">
 
+    <queries>
+
+        <!-- Camera -->
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".ParseApp"
@@ -15,14 +25,18 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/eatfit"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/eatfit"
         android:supportsRtl="true"
         android:theme="@style/Theme.Eatfit"
         tools:targetApi="31">
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:name=".DetailsActivity"
+            android:name=".GoalActivity"
             android:exported="false" />
+        <activity
+            android:name=".DetailsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".FacebookAuth"
             android:exported="false" />

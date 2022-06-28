@@ -7,28 +7,29 @@
     tools:context=".SearchActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/find_res"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
+        android:layout_margin="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="160dp"
+        android:background="@drawable/search_bar"
         android:orientation="horizontal"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/google_map"
+        android:padding="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <Spinner
+            android:id="@+id/sp_type"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/sp_type"
-            android:background="#D3D3D3"/>
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/findBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="#ACCF83"
+
             android:src="@drawable/find" />
     </LinearLayout>
 
@@ -39,17 +40,16 @@
         android:layout_gravity="bottom"
         android:background="#480C0C0C"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu"
+        android:layout_marginTop="0dp"/>
 
     <fragment
         android:id="@+id/google_map"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigator"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_height="590dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigator"
+        android:layout_height="588dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/find_res"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/find_res" />
 </androidx.constraintlayout.widget.ConstraintLayout>

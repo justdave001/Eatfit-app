@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/marker" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button2"
+        android:id="@+id/lWeight"
         android:layout_width="153dp"
         android:layout_height="72dp"
         android:layout_marginStart="40dp"
@@ -52,13 +52,13 @@
         android:background="@drawable/button_bg"
         android:backgroundTint="#E88D8D"
         android:text="Lose weight"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintEnd_toStartOf="@+id/gWeight"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/firstName" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button3"
+        android:id="@+id/gWeight"
         android:layout_width="153dp"
         android:layout_height="72dp"
         android:layout_marginTop="192dp"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/firstName" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button4"
+        android:id="@+id/sMoney"
         android:layout_width="153dp"
         android:layout_height="72dp"
         android:layout_marginTop="60dp"
@@ -78,14 +78,14 @@
         android:text="save  $$"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/lWeight" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="107dp"
         android:layout_height="99dp"
         android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/lWeight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/firstName"

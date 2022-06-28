@@ -55,7 +55,8 @@ public class SearchActivity extends AppCompatActivity {
     GoogleMap mMap;
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient fusedLocationProviderClient;
-    double currentLat = 0, currentLong =0;
+    double currentLat = 0, currentLong = 0;
+    public int integer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,9 +69,9 @@ public class SearchActivity extends AppCompatActivity {
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
 
         //initializing type of place
-        String[] placeList = {"atm", "bank", "hospital", "movie_theater", "restaurant"};
+        String[] placeList = {"atm","movie_theater", "restaurant"};
         //initialize array of name of place
-        String[] placeName = {"ATM", "Bank", "Hospital", "Movie theater", "Restaurant"};
+        String[] placeName = {"ATM", "Movie theater", "Restaurant"};
         //put adapter on spinner
         sp_type.setAdapter(new ArrayAdapter<>(SearchActivity.this, android.R.layout.simple_spinner_dropdown_item, placeName));
 
@@ -82,23 +83,26 @@ public class SearchActivity extends AppCompatActivity {
                 PackageManager.PERMISSION_GRANTED) {
             //WHEN granted call method
             getCurrrentLocation();
-        }else {
+        } else {
             //if permission denied ask for it
             ActivityCompat.requestPermissions(SearchActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
 
         findBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                integer = sp_type.getSelectedItemPosition();
                 //get selected position of spinner
                 int i = sp_type.getSelectedItemPosition();
 
+
                 //initialize url
                 String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" + //url
-                "?location="+currentLat+","+currentLong + "&radius=5000" + //nearby radius
-                "&types=" + placeList[i] +
-                "&sensor=true" +
-                "&key=" + getResources().getString(R.string.google_map_key);
+                        "?location=" + currentLat + "," + currentLong + "&radius=5000" + //nearby radius
+                        "&types=" + placeList[i] +
+                        "&sensor=true" +
+                        "&key=" + getResources().getString(R.string.google_map_key);
 
 
                 //place task method to download json data
@@ -150,6 +154,16 @@ public class SearchActivity extends AppCompatActivity {
 //            // for ActivityCompat#requestPermissions for more details.
 //            return;
 //        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -278,6 +292,7 @@ public class SearchActivity extends AppCompatActivity {
         protected void onPostExecute(List<HashMap<String, String>> hashMaps) {
             mMap.clear();
             //add yo hashmap
+
             for (int i=0; i<hashMaps.size();i++){
                 //initialize hashmap
                 HashMap<String,String> hashMapList = hashMaps.get(i);
@@ -309,18 +324,30 @@ public class SearchActivity extends AppCompatActivity {
                 newoptions.icon(icon);
                 //add marker on map
                 mMap.addMarker(newoptions);
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(@NonNull Marker marker) {
-                        String markerList = marker.getTitle();
 
-                        Intent i =new Intent(SearchActivity.this, DetailsActivity.class);
-                        i.putExtra("title", markerList);
-                        startActivity(i);
 
-                        return false;
-                    }
-                });
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+
+                        public  boolean onMarkerClick(@NonNull Marker marker) {
+                            if (integer==2 ) {
+                                String markerList = marker.getTitle();
+                                Intent i = new Intent(SearchActivity.this, DetailsActivity.class);
+                                i.putExtra("title", markerList);
+                                startActivity(i);
+                            }
+                            return false;
+                        }
+
+                    });
+
+
+
+
+
+
+
+
 
 
 
