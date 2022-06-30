@@ -2,10 +2,12 @@ package com.example.eatfit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,13 +19,16 @@ public class DetailsActivity extends AppCompatActivity {
     TextView marker;
     EditText f_name;
     TextView firstName;
+    AppCompatButton lWeight;
+    AppCompatButton gWeight;
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         marker = findViewById(R.id.marker);
-
+        lWeight = findViewById(R.id.lWeight);
+        gWeight = findViewById(R.id.gWeight);
 
         String title = getIntent().getStringExtra("title");
         marker.setText(title);
@@ -48,6 +53,14 @@ public class DetailsActivity extends AppCompatActivity {
 
                 }
                 return false;
+            }
+        });
+
+        lWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetailsActivity.this, GoalActivity.class);
+                startActivity(i);
             }
         });
 

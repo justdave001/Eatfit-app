@@ -2,98 +2,127 @@ package com.example.eatfit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Adapter;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class GoalActivity extends AppCompatActivity {
-    AppCompatButton gWeight;
-    AppCompatButton lWeight;
-    AppCompatButton sMoney;
-    String latitude;
-    String longitude;
-    String quote_ids;
-    String charset = "UTF-8";
 
-    public String BASE_URL = "https://mealme-4.mealme.ai";
-    public String SEARCH_ENDPOINT = "/restaurants/search/store";
-    public String MENU_ENDPOINT = "/restaurants/details/menu";
+    RecyclerView rvItems;
+    LinearLayoutManager layoutManager;
+    ItemAdapter itemAdapter;
+    public String BASE_URL = "https://apimocha.com/eatfit/example";
+    List<Restaurant> restaurantList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
 
-        String query = null;
-
-        try {
-            query = String.format("param1=%s&param2=%s",
-                        URLEncoder.encode(latitude, charset),
-                        URLEncoder.encode(longitude, charset),
-                        URLEncoder.encode(quote_ids, charset));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        URL request_url = null;
-        try {
-            request_url = new URL(BASE_URL);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        HttpURLConnection http_conn = null;
-        try {
-            http_conn = (HttpURLConnection)request_url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            request_url = new URL(BASE_URL+SEARCH_ENDPOINT);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        URLConnection connection = null;
-        try {
-            connection = new URL(SEARCH_ENDPOINT + "?" + query).openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        connection.setRequestProperty("Accept-Charset", charset);
-        try {
-            InputStream response = connection.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        rvItems = findViewById(R.id.rvItems);
+        restaurantList =  new ArrayList<>();
+        extractRestaurants();
 
 
-//        print("Running...")
-//    # Request a list of stores
-//                search_parameters = A({"query": latitide, longitude})
-//        search_resp = requests.get(f"{BASE_URL}{SEARCH_ENDPOINT}?{search_parameters}", headers=HEADERS)
-//        if search_resp.status_code != 200:
-//        print(f"Search API Failed with status {search_resp.status_code} and response: {search_resp.text}")
-//        return {}
-//        stores = search_resp.json().get("restaurants", [])
-//        for store in stores:
-//        for quote_id in store.get("quote_ids", []):
-//            # Fetch menu for this quote
-//                menu_parameters = urlencode({"quote_id": quote_id, "user_latitude": latitude, "user_longitude": longitude})
-//        menu_resp = requests.get(f"{BASE_URL}{MENU_ENDPOINT}?{menu_parameters}", headers=HEADERS)
-//        if menu_resp.status_code != 200:
-//        print(f"Menu API Failed with status {menu_resp.status_code} and response: {menu_resp.text}")
-//            else:
-//                # Successfully found an available menu!
-//        return menu_resp.json()
+
+    }
+
+    private void extractRestaurants() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        Request request = new StringRequest(Request.Method.GET, BASE_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray rest = jsonObject.getJSONArray("restaurants");
+
+                    for (int i = 0; i < rest.length(); i++) {
+                        JSONObject jsonObject1 = rest.getJSONObject(i);
+                        JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
+                        for (int j = 0; j < menu.length(); j++) {
+                            JSONObject items = menu.getJSONObject(j);
+                            Restaurant restaurant = new Restaurant();
+                            restaurant.setName(items.getString("name"));
+                            restaurant.setDescription(items.getString("description"));
+                            restaurant.setCost(items.getInt("price"));
+                            if(items.has("calories")) {
+                                restaurant.setCalories(items.getInt("calories"));
+                                restaurant.setFat(items.getInt("fat"));
+                                restaurant.setProtein(items.getInt("protein"));
+
+                                restaurantList.add(restaurant);
+                            }
+
+                        }
+
+                    }
+                    layoutManager = new LinearLayoutManager(getApplicationContext());
+                    rvItems.setLayoutManager(layoutManager);
+                    itemAdapter = new ItemAdapter(restaurantList);
+                    rvItems.setAdapter(itemAdapter);
+
+                } catch (JSONException e) {
+                    Log.d("tag", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("tag", error.getMessage());
+            }
+        });
+        queue.add(request);
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//               try {
+//                   JSONObject jsonObject = new JSONObject(response)
+//               }
+//
+//            }
+//        });
+
     }
 
 
 }
+
+
