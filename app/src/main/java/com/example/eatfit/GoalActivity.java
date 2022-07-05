@@ -52,6 +52,7 @@ public class GoalActivity extends AppCompatActivity {
     List<Restaurant> restaurantList;
     Context context;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -60,6 +61,8 @@ public class GoalActivity extends AppCompatActivity {
         context = getApplicationContext();
         rvItems = findViewById(R.id.rvItems);
         restaurantList =  new ArrayList<>();
+
+
         extractRestaurants();
 
 
@@ -71,13 +74,16 @@ public class GoalActivity extends AppCompatActivity {
         Request request = new StringRequest(Request.Method.GET, BASE_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                String res_name = getIntent().getStringExtra("restaurant_name");
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray rest = jsonObject.getJSONArray("restaurants");
 
                     for (int i = 0; i < rest.length(); i++) {
                         JSONObject jsonObject1 = rest.getJSONObject(i);
+                        if(jsonObject1.getString("name").equals(getIntent().getStringExtra("restaurant_name"))){
                         JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
+
                         for (int j = 0; j < menu.length(); j++) {
                             JSONObject items = menu.getJSONObject(j);
                             Restaurant restaurant = new Restaurant();
@@ -96,7 +102,7 @@ public class GoalActivity extends AppCompatActivity {
 
                             }restaurantList.add(restaurant);
 
-                        }
+                        }}
 
                     }
                     layoutManager = new LinearLayoutManager(getApplicationContext());

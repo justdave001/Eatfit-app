@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -59,7 +60,10 @@ public class DetailsActivity extends AppCompatActivity {
         lWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String resname = marker.getText().toString();
+                Log.e("marker",resname);
                 Intent i = new Intent(DetailsActivity.this, GoalActivity.class);
+                i.putExtra("restaurant_name", resname);
                 startActivity(i);
             }
         });
