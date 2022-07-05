@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,13 +50,14 @@ public class GoalActivity extends AppCompatActivity {
     ItemAdapter itemAdapter;
     public String BASE_URL = "https://apimocha.com/eatfit/example";
     List<Restaurant> restaurantList;
+    Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
-
+        context = getApplicationContext();
         rvItems = findViewById(R.id.rvItems);
         restaurantList =  new ArrayList<>();
         extractRestaurants();
@@ -82,20 +84,24 @@ public class GoalActivity extends AppCompatActivity {
                             restaurant.setName(items.getString("name"));
                             restaurant.setDescription(items.getString("description"));
                             restaurant.setCost(items.getInt("price"));
+                            if(items.has("image")) {
+                                restaurant.setImg(items.getString("image"));
+                            }
                             if(items.has("calories")) {
                                 restaurant.setCalories(items.getInt("calories"));
                                 restaurant.setFat(items.getInt("fat"));
                                 restaurant.setProtein(items.getInt("protein"));
 
-                                restaurantList.add(restaurant);
-                            }
+
+
+                            }restaurantList.add(restaurant);
 
                         }
 
                     }
                     layoutManager = new LinearLayoutManager(getApplicationContext());
                     rvItems.setLayoutManager(layoutManager);
-                    itemAdapter = new ItemAdapter(restaurantList);
+                    itemAdapter = new ItemAdapter(restaurantList, context);
                     rvItems.setAdapter(itemAdapter);
 
                 } catch (JSONException e) {
@@ -121,7 +127,6 @@ public class GoalActivity extends AppCompatActivity {
 //        });
 
     }
-
 
 }
 

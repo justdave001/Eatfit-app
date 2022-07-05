@@ -1,20 +1,24 @@
 package com.example.eatfit;
 
+import android.util.Log;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Restaurant {
     public String name;
     public int calories;
-    public int cost;
+    public double cost;
     public int protein;
     public int phoneNumber;
     public String description;
     int fat;
+    String img;
 
 
     public Restaurant(){}
     public Restaurant(String name, int phoneNumber, int calories,
-                    int cost, int fat,int protein,String description){
+                    double cost, int fat,int protein,String description, String img){
             this.name = name;
             this.phoneNumber = phoneNumber;
             this.calories = calories;
@@ -22,6 +26,7 @@ public class Restaurant {
             this.fat = fat;
             this.protein=protein;
             this.description=description;
+            this.img = img;
 
     }
 
@@ -33,11 +38,12 @@ public class Restaurant {
         this.calories = calories;
     }
 
-    public int getCost() {
-        return cost;
+    public double getCost() {
+
+        return cost/100;
     }
 
-    public void setCost(int cost) {
+    public void setCost(long cost) {
         this.cost = cost;
     }
 
@@ -78,6 +84,12 @@ public class Restaurant {
 
     public void setFat(int fat) {
         this.fat = fat;
+    }
+    public String getImg(){
+        return img;
+    }
+    public void setImg(String img){
+        this.img=img;
     }
 
 
