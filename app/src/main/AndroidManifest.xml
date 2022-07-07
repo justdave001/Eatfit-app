@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+
         android:usesCleartextTraffic="true"
         android:largeHeap="true"
         android:name=".ParseApp"
@@ -34,11 +35,13 @@
         tools:targetApi="31">
         <activity
             android:name=".GoalActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".GoalActivity"/>
         <activity
             android:name=".DetailsActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:parentActivityName=".MainActivity"
+           />
         <activity
             android:name=".FacebookAuth"
             android:exported="false" />

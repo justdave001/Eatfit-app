@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.096" />
+        app:layout_constraintVertical_bias="0.06" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigator"
@@ -73,7 +73,7 @@
         android:id="@+id/sMoney"
         android:layout_width="153dp"
         android:layout_height="72dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/button_bg"
         android:text="save  $$"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,6 +91,37 @@
         app:layout_constraintTop_toBottomOf="@+id/firstName"
         app:layout_constraintVertical_bias="0.969"
         app:srcCompat="@drawable/healthy" />
+
+    <EditText
+        android:id="@+id/money"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/sMoney" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="24dp"
+        android:inputType="numberDecimal"
+        android:text="Max amount:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sMoney" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="$"
+        app:layout_constraintEnd_toStartOf="@+id/money"
+        app:layout_constraintTop_toTopOf="@+id/money" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -131,7 +131,7 @@ public class SearchActivity extends AppCompatActivity {
                     case R.id.person:
                         startActivity(new Intent(getApplicationContext(), PersonActivity.class));
                         Toast.makeText(SearchActivity.this, "person!", Toast.LENGTH_SHORT).show();
-                        overridePendingTransition(0, 0);
+
                         return true;
 
                 }

@@ -20,8 +20,11 @@ public class DetailsActivity extends AppCompatActivity {
     TextView marker;
     EditText f_name;
     TextView firstName;
+    EditText money;
     AppCompatButton lWeight;
     AppCompatButton gWeight;
+    AppCompatButton sMoney;
+    String cost;
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,8 @@ public class DetailsActivity extends AppCompatActivity {
         marker = findViewById(R.id.marker);
         lWeight = findViewById(R.id.lWeight);
         gWeight = findViewById(R.id.gWeight);
+        sMoney = findViewById(R.id.sMoney);
+        money = findViewById(R.id.money);
 
         String title = getIntent().getStringExtra("title");
         marker.setText(title);
@@ -49,7 +54,6 @@ public class DetailsActivity extends AppCompatActivity {
 
                     case R.id.person:
                         startActivity(new Intent(getApplicationContext(), PersonActivity.class));
-                        overridePendingTransition(0,0);
                         return true;
 
                 }
@@ -57,16 +61,43 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+
         lWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String resname = marker.getText().toString();
-                Log.e("marker",resname);
                 Intent i = new Intent(DetailsActivity.this, GoalActivity.class);
                 i.putExtra("restaurant_name", resname);
+                i.putExtra("button_id","0");
                 startActivity(i);
             }
         });
 
+        gWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String resname = marker.getText().toString();
+                Intent i = new Intent(DetailsActivity.this, GoalActivity.class);
+                i.putExtra("restaurant_name", resname);
+                i.putExtra("button_id","1");
+                startActivity(i);
+            }
+        });
+
+        sMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String resname = marker.getText().toString();
+                if (!money.getText().toString().equals("")){
+                    cost = Integer.toString(Integer.parseInt(money.getText().toString())*100);}else {
+                    cost="9999999999999999";
+                }
+                Intent i = new Intent(DetailsActivity.this, GoalActivity.class);
+                i.putExtra("restaurant_name", resname);
+                i.putExtra("button_id","2");
+                i.putExtra("cost_amt",cost);
+                startActivity(i);
+            }
+        });
     }
 }

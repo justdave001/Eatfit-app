@@ -257,7 +257,7 @@ public class PersonActivity extends AppCompatActivity {
                 @Override
                 public void done(ParseException e) {
                     if(e==null){
-                        Toast.makeText(getBaseContext(), "Done!", Toast.LENGTH_LONG).show();
+
                     }else {
                         Toast.makeText(PersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }

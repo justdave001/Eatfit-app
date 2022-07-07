@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.parse.ParseInstallation;
@@ -37,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.search:
                         Toast.makeText(MainActivity.this, "search!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        overridePendingTransition(0,0);
+
                         return true;
 
                     case R.id.person:
                         Toast.makeText(MainActivity.this, "person!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), PersonActivity.class));
-                        overridePendingTransition(0,0);
+
                         return true;
 
                 }

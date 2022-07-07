@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -53,6 +54,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
         return restaurantList.size();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         TextView tvDescription;
@@ -61,6 +64,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
         TextView tvProtein;
         TextView tvCalories;
         ImageView food_img;
+        ImageView addRes;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -71,6 +75,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
             tvProtein = itemView.findViewById(R.id.tvProtein);
             tvFat = itemView.findViewById(R.id.tvFat);
             tvCost = itemView.findViewById(R.id.tvCost);
+            addRes = itemView.findViewById(R.id.addRes);
         }
 
     }
