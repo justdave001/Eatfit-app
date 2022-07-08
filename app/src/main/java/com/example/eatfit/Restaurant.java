@@ -16,6 +16,7 @@ public class Restaurant {
     String img;
 
 
+
     public Restaurant(){}
     public Restaurant(String name, int phoneNumber, int calories,
                     double cost, int fat,int protein,String description, String img){
@@ -27,6 +28,7 @@ public class Restaurant {
             this.protein=protein;
             this.description=description;
             this.img = img;
+
 
     }
 
@@ -50,6 +52,7 @@ public class Restaurant {
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;

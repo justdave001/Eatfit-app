@@ -121,17 +121,18 @@ public class PersonActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
                         case R.id.home:
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            Toast.makeText(PersonActivity.this, "home!", Toast.LENGTH_SHORT).show();
+
                             return true;
 
                         case R.id.search:
                             startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                            overridePendingTransition(0, 0);
-                            return true;
+
+                            return  true;
 
                         case R.id.person:
-                            Toast.makeText(PersonActivity.this, "person!", Toast.LENGTH_SHORT).show();
                             return true;
+
+
 
                     }
                     return false;
@@ -148,18 +149,6 @@ public class PersonActivity extends AppCompatActivity {
                 }
             });
 
-//        imgPhoto.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    Intent intent = new Intent();
-//                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivity(intent);
-//                } catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
         }
     @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
@@ -168,7 +157,6 @@ public class PersonActivity extends AppCompatActivity {
         if (resultCode == PersonActivity.RESULT_OK) {
 
             if (requestCode == RESULT_LOAD_GALLERY_IMAGE && null != data) {
-                Log.i("onactivity", "ok");
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -207,7 +195,7 @@ public class PersonActivity extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 folder      /* directory */
         );
-        Log.println(Log.VERBOSE,"cam",cameraImageFile.toString());
+
         return cameraImageFile;
 
     }
@@ -230,7 +218,7 @@ public class PersonActivity extends AppCompatActivity {
             }
             catch(Exception e) {
                 e.printStackTrace();
-                Log.e("upload","failed");
+
             }
 
             // Create the ParseFile
@@ -241,18 +229,17 @@ public class PersonActivity extends AppCompatActivity {
                 public void done(ParseException e) {
                     if(e!=null){
                         Toast.makeText(PersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("picture", e.getMessage());
+
                     }
                 }
             });
 
-            // Create a New Class called "ImageUpload" in Parse
             ParseObject imgupload = new ParseObject("Image");
-            // Create a column named "ImageName" and set the string
+
             imgupload.put("Image", "picturePath");
-            // Create a column named "ImageFile" and insert the image
+
             imgupload.put("ImageFile", file);
-            // Create the class and the columns
+
             imgupload.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -292,7 +279,7 @@ public class PersonActivity extends AppCompatActivity {
                         startActivityForResult(cameraIntent, RESULT_LOAD_CAMERA_IMAGE);
 
                     } catch (IOException e) {
-                        Log.e("cam","err");
+
                         e.printStackTrace();
                     }
                 }

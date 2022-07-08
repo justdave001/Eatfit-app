@@ -32,17 +32,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.home:
-                        Toast.makeText(MainActivity.this, "home!", Toast.LENGTH_SHORT).show();
+
                         return true;
 
                     case R.id.search:
-                        Toast.makeText(MainActivity.this, "search!", Toast.LENGTH_SHORT).show();
+
                         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
 
                         return true;
 
                     case R.id.person:
-                        Toast.makeText(MainActivity.this, "person!", Toast.LENGTH_SHORT).show();
+
                         startActivity(new Intent(getApplicationContext(), PersonActivity.class));
 
                         return true;

@@ -122,7 +122,7 @@ public class SearchActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.home:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        Toast.makeText(SearchActivity.this, "home!", Toast.LENGTH_SHORT).show();
+
                         return true;
 
                     case R.id.search:
@@ -130,7 +130,7 @@ public class SearchActivity extends AppCompatActivity {
 
                     case R.id.person:
                         startActivity(new Intent(getApplicationContext(), PersonActivity.class));
-                        Toast.makeText(SearchActivity.this, "person!", Toast.LENGTH_SHORT).show();
+
 
                         return true;
 
