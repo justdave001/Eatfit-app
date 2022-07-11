@@ -121,7 +121,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
 
                             ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
                             query.whereEqualTo("user", currentUser);
-
+                            query.whereEqualTo("res_name", restaurant_name);
 
 
                             query.findInBackground(new FindCallback<ParseObject>() {

@@ -62,8 +62,7 @@ public class GoalActivity extends AppCompatActivity {
     List restt = new ArrayList<>();
     Context context;
     ItemAdapter.RecyclerViewClickListener listener;
-    String meal;
-    ViewPager viewPager;
+
 
     String restaurant_name;
 //    List restaurant  = new ArrayList<>();
