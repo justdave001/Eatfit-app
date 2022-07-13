@@ -2,6 +2,7 @@ package com.example.eatfit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private HomeAdapter homeAdapter;
+    NestedAdapter nestedAdapter;
     private List<HomeModel> modelList;
     String restaurantName;
     String tempName = "";
@@ -53,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.mainRv);
         modelList = new ArrayList<>();
-
         getDataFromServer();
         prepareRV();
 
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     private void prepareRV() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -94,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
 
         query.whereEqualTo("user", currentUser);
-//        query.orderByDescending("createdAt");
+        query.orderByAscending("updated_at");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -102,18 +105,22 @@ public class MainActivity extends AppCompatActivity {
                     for (ParseObject object:objects){
                         String restaurantName = object.getString("res_name");
                         menuItems= (object.getList("menu_items"));
+                        String objid = object.getObjectId();
+                        Log.d("id", objid);
 
                         if (!hash_Set.contains(restaurantName)) {
                             modelList.add(new HomeModel(restaurantName, menuItems));
                         }
                         hash_Set.add(restaurantName);
-                    }
+                    }query.orderByAscending("updatedAt");
                     homeAdapter.notifyDataSetChanged();
 
                 }
             }
         });
 
+
     }
+
 
 }

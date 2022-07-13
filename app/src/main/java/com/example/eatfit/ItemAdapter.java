@@ -35,6 +35,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
 
     private List<Restaurant> restaurantList;
     Context context;
+    String tempid;
     String restaurant_name;
     public RecyclerViewClickListener listener;
     List restt = new ArrayList<>();
@@ -117,7 +118,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
                             rname.put("res_name", restaurant_name);
                             rname.addUnique("menu_items", restt.get(pos));
                             rname.saveInBackground();
-
+                            tempid = rname.getObjectId();
 
                             ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
                             query.whereEqualTo("user", currentUser);
@@ -129,9 +130,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
                                 public void done(List<ParseObject> objects, ParseException e) {
                                     if (e==null){
                                         for (ParseObject rname:objects){
-
-                                            rname.addUnique("menu_items", restt.get(pos));
-                                            rname.saveInBackground();
+                                            if (rname.getString("res_name").equals(restaurant_name)
+                                         ) {
+                                                rname.addUnique("menu_items", restt.get(pos));
+                                                rname.saveInBackground();
+                                            }
                                         }
 
                                     }

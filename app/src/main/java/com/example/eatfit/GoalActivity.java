@@ -126,7 +126,7 @@ public class GoalActivity extends AppCompatActivity {
 
                         }}
                         else if(jsonObject1.getString("name").equals(getIntent().getStringExtra("restaurant_name")) && getIntent().getStringExtra("button_id").equals("1")){
-
+                            restaurant_name = (jsonObject1.getString("name"));
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
                             for (int j = 0; j < menu.length(); j++) {
 
@@ -134,6 +134,7 @@ public class GoalActivity extends AppCompatActivity {
                                 if (items.has("calories") && items.getInt("calories")>700 && items.getInt("fat") > 60 && items.getInt("protein") > 30)  {
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
+                                    restt.add(items.getString("name"));
                                     restaurant.setDescription(items.getString("description"));
                                     restaurant.setCost(items.getInt("price"));
                                     if (items.has("image")) {
@@ -150,7 +151,7 @@ public class GoalActivity extends AppCompatActivity {
                             }}
 
                         else if(jsonObject1.getString("name").equals(getIntent().getStringExtra("restaurant_name")) && getIntent().getStringExtra("button_id").equals("2")){
-
+                            restaurant_name = (jsonObject1.getString("name"));
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
                             for (int j = 0; j < menu.length(); j++) {
 
@@ -159,6 +160,7 @@ public class GoalActivity extends AppCompatActivity {
 
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
+                                    restt.add(items.getString("name"));
                                     restaurant.setDescription(items.getString("description"));
                                     restaurant.setCost(items.getInt("price"));
                                     if (items.has("image")) {

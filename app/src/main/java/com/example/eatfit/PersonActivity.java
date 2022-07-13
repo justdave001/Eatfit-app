@@ -57,7 +57,7 @@ public class PersonActivity extends AppCompatActivity {
     ImageView imgPhoto;
     public String mCurrentPhotoPath;
     public File cameraImageFile;
-
+    TextView userName;
 
 
     @Override
@@ -65,6 +65,7 @@ public class PersonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
 
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         imgPhoto = findViewById(R.id.imgPhoto);
@@ -73,6 +74,11 @@ public class PersonActivity extends AppCompatActivity {
         etLastname = findViewById(R.id.etLastname);
         etPassword = findViewById(R.id.etPassword);
         updateBtn = findViewById(R.id.updateBtn);
+        userName = findViewById(R.id.userName);
+        String name = currentUser.getString("f_name")+
+               " "+ currentUser.getString("l_name");
+
+        userName.setText(name);
 
 
         imgPhoto.setOnClickListener(chooseImageListener);
@@ -86,7 +92,7 @@ public class PersonActivity extends AppCompatActivity {
                     String lastname = etLastname.getText().toString();
                     String password = etPassword.getText().toString();
 
-                    ParseUser currentUser = ParseUser.getCurrentUser();
+
                     if (!username.isEmpty()) {
                         currentUser.put("username", username);
                     }
@@ -234,7 +240,7 @@ public class PersonActivity extends AppCompatActivity {
                 }
             });
 
-            ParseObject imgupload = new ParseObject("Image");
+            ParseObject imgupload = new ParseObject("User");
 
             imgupload.put("Image", "picturePath");
 
