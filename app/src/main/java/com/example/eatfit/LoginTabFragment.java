@@ -79,7 +79,7 @@ public class LoginTabFragment extends Fragment {
     }
 
     private void loginScreen() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), SplashActivity.class);
         startActivity(intent);
 
     }

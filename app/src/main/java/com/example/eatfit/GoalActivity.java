@@ -1,5 +1,6 @@
 package com.example.eatfit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,10 +12,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -51,20 +55,24 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class GoalActivity extends AppCompatActivity {
+public class GoalActivity extends AppCompatActivity{
 
     RecyclerView rvItems;
     LinearLayoutManager layoutManager;
-    ImageView addRes;
+
     ItemAdapter itemAdapter;
     public String BASE_URL = "https://apimocha.com/eatfit/example";
     List<Restaurant> restaurantList;
     List restt = new ArrayList<>();
     Context context;
     ItemAdapter.RecyclerViewClickListener listener;
-
-
+    List<Restaurant> itemsInCartList;
+    ImageView buttonCheckout;
+    int totalItemInCart = 0;
+    List<Restaurant> menuList;
+    Restaurant restaurant;
     String restaurant_name;
+    List<Restaurant> menuItems = new ArrayList<>();
 //    List restaurant  = new ArrayList<>();
 
 
@@ -75,8 +83,32 @@ public class GoalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_goal);
         context = getApplicationContext();
         rvItems = findViewById(R.id.rvItems);
+
+        buttonCheckout = findViewById(R.id.buttonCheckout);
         restaurantList =  new ArrayList<>();
+
+        Restaurant restaurant = new Restaurant();
+
+
         extractRestaurants();
+        buttonCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemsInCartList != null && itemsInCartList.size() <= 0) {
+                    Toast.makeText(GoalActivity.this, "Please add some items in cart.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
+                Intent i = new Intent(GoalActivity.this, PlaceOrderActivity.class);
+                i.putExtra("RestaurantModel", restaurant);
+                i.putExtra("name", restaurant_name);
+                i.putExtra("price", Double.toString(restaurantList.get(itemAdapter.pos).getCost()));
+                i.putExtra("qty", Integer.toString(restaurantList.get(itemAdapter.pos).getTotalInCart()))
+                ;
+                startActivityForResult(i, 1000);
+            }
+        });
 
 
 
@@ -121,10 +153,9 @@ public class GoalActivity extends AppCompatActivity {
 
 
 
-
                             }
 
-                        }}
+                        } }
                         else if(jsonObject1.getString("name").equals(getIntent().getStringExtra("restaurant_name")) && getIntent().getStringExtra("button_id").equals("1")){
                             restaurant_name = (jsonObject1.getString("name"));
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
@@ -171,10 +202,12 @@ public class GoalActivity extends AppCompatActivity {
                                         restaurant.setFat(items.getInt("fat"));
                                         restaurant.setProtein(items.getInt("protein"));
                                     }
+
                                     restaurantList.add(restaurant);
 
                                 }
                             }}
+
 
                     }
 
@@ -195,6 +228,7 @@ public class GoalActivity extends AppCompatActivity {
 
             }
         });
+
         queue.add(request);
 
 
@@ -228,6 +262,53 @@ public class GoalActivity extends AppCompatActivity {
             }
         };
     }
+//    @Override
+//    public void onAddToCartClick(Restaurant restaurant) {
+//        if(itemsInCartList == null) {
+//            itemsInCartList = new ArrayList<>();
+//        }
+//        Log.d("carts", itemsInCartList.toString());
+//        itemsInCartList.add(restaurant);
+//        Log.d("cartlist", itemsInCartList.toString());
+//        totalItemInCart = 0;
+//        for(Restaurant m : itemsInCartList) {
+//            Log.d("memm", m.toString());
+//            totalItemInCart = totalItemInCart + m.getTotalInCart();
+//        }
+////        buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+//    }
+//
+//    @Override
+//    public void onUpdateCartClick(Restaurant restaurant) {
+//        if(itemsInCartList.contains(restaurant)) {
+//            int index = itemsInCartList.indexOf(restaurant);
+//            itemsInCartList.remove(index);
+//            itemsInCartList.add(index, restaurantList.get(itemAdapter.pos));
+//
+//            totalItemInCart = 0;
+//
+//            for(Restaurant m : itemsInCartList) {
+//                totalItemInCart = totalItemInCart + m.getTotalInCart();
+//            }
+////            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+//        }
+//    }
+//
+//    @Override
+//    public void onRemoveFromCartClick(Restaurant restaurant) {
+//        if(itemsInCartList.contains(restaurant)) {
+//            itemsInCartList.remove(restaurant);
+//            totalItemInCart = 0;
+//
+//            for(Restaurant m : itemsInCartList) {
+//                totalItemInCart = totalItemInCart + m.getTotalInCart();
+//            }
+////            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+//        }
+//    }
+
+
+
 
 }
 

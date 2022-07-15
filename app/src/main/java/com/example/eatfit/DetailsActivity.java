@@ -25,6 +25,7 @@ public class DetailsActivity extends AppCompatActivity {
     AppCompatButton gWeight;
     AppCompatButton sMoney;
     String cost;
+    Restaurant restaurant = new Restaurant();
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class DetailsActivity extends AppCompatActivity {
                 Intent i = new Intent(DetailsActivity.this, GoalActivity.class);
                 i.putExtra("restaurant_name", resname);
                 i.putExtra("button_id","0");
+                i.putExtra("restaurantModel",restaurant);
                 startActivity(i);
             }
         });
@@ -96,6 +98,7 @@ public class DetailsActivity extends AppCompatActivity {
                 i.putExtra("restaurant_name", resname);
                 i.putExtra("button_id","2");
                 i.putExtra("cost_amt",cost);
+
                 startActivity(i);
             }
         });

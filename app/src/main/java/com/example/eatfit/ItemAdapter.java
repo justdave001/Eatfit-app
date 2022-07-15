@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -33,24 +34,28 @@ import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
 
-    private List<Restaurant> restaurantList;
+     List<Restaurant> restaurantList;
     Context context;
-    String tempid;
     String restaurant_name;
     public RecyclerViewClickListener listener;
     List restt = new ArrayList<>();
     int pos;
+    ImageView buttonCheckout;
+    List<Restaurant> menuItems = new ArrayList<>();
+
+
+
+
     public ItemAdapter(List<Restaurant> restaurantList, Context context,String restaurant_name,RecyclerViewClickListener listener,
                        List restt) {
         this.context = context;
         this.restaurantList = restaurantList;
         this.restaurant_name = restaurant_name;
-        this.listener=listener;
         this.restt=restt;
 
 
-
     }
+
 
     public interface RecyclerViewClickListener {
          void onClick(View v, int position);
@@ -63,6 +68,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
@@ -74,6 +80,70 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
         holder.tvCost.setText("$"+Double.toString(restaurantList.get(position).getCost()));
 
         Glide.with(context).load(restaurantList.get(position).getImg()).into(holder.food_img);
+        holder.addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("reslist", Double.toString(restaurantList.get(position).getCost()));
+                Restaurant restaurant  = restaurantList.get(pos);
+//                String restaurant_name =  restaurant.getName();
+//                Double menu_price = restaurant.getCost();
+                menuItems.add(restaurant);
+                if (!restaurant.toString().isEmpty()){
+                    Log.d("reslist", "notempty");
+                }
+                restaurant.setTotalInCart(1);
+//                clickListener.onAddToCartClick(restaurant.getName());
+                holder.addToCartButton.setVisibility(View.GONE);
+                holder.tvCount.setText(restaurant.getTotalInCart()+"");
+                String ItemName = restaurantList.get(position).getName();
+                String price = Double.toString(restaurantList.get(position).getCost());
+                Log.d("cost", price.toString());
+                String qty = holder.tvName.getText().toString();
+                String image = restaurantList.get(position).getImg();
+                Intent intent = new Intent("custom-message");
+                //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                intent.putExtra("quantity",qty);
+                intent.putExtra("image",image);
+                intent.putExtra("item",ItemName);
+                intent.putExtra("price",price);
+
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            }
+        });
+
+        holder.imageMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Restaurant restaurant = restaurantList.get(pos);
+                int total = restaurantList.get(holder.getAdapterPosition()).getTotalInCart();
+                total--;
+                if(total > 0 ) {
+                    restaurantList.get(position).setTotalInCart(total);
+
+                    holder.tvCount.setText(total +"");
+                } else {
+                    holder.addToCartButton.setVisibility(View.VISIBLE);
+                    restaurantList.get(holder.getAdapterPosition()).setTotalInCart(total);
+//                    clickListener.onRemoveFromCartClick(restaurant);
+                }
+            }
+        });
+
+        holder.imageAddOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Restaurant restaurant  = restaurantList.get(position);
+                Log.d("menuu",restaurantList.get(position).toString());
+                int total = restaurant.getTotalInCart();
+                total++;
+                if(total <= 100) {
+                    restaurant.setTotalInCart(total);
+//                    clickListener.onUpdateCartClick(restaurant);
+                    holder.tvCount.setText(total +"");
+                }
+            }
+        });
+
 
     }
 
@@ -84,7 +154,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public  class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         TextView tvDescription;
         TextView tvCost;
@@ -94,9 +164,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
         ImageView food_img;
         TextView name;
         ImageView addRes;
+        ImageView imageMinus;
+        ImageView imageAddOne;
+        TextView  tvCount;
+        AppCompatButton addToCartButton;
+        ImageView buttonCheckout;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             food_img = itemView.findViewById(R.id.food_img);
             tvName = itemView.findViewById(R.id.tvName);
             tvDescription = itemView.findViewById(R.id.tvDescription);
@@ -106,6 +181,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
             tvCost = itemView.findViewById(R.id.tvCost);
             name = itemView.findViewById(R.id.name);
             addRes = itemView.findViewById(R.id.addRes);
+            imageMinus = itemView.findViewById(R.id.imageMinus);
+            imageAddOne = itemView.findViewById(R.id.imageAddOne);
+            tvCount = itemView.findViewById(R.id.tvCount);
+            addToCartButton = itemView.findViewById(R.id.addToCartButton);
+            buttonCheckout = itemView.findViewById(R.id.buttonCheckout);
+
 
             addRes.setOnClickListener(
                     new View.OnClickListener() {
@@ -118,7 +199,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
                             rname.put("res_name", restaurant_name);
                             rname.addUnique("menu_items", restt.get(pos));
                             rname.saveInBackground();
-                            tempid = rname.getObjectId();
 
                             ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
                             query.whereEqualTo("user", currentUser);
@@ -150,4 +230,5 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
 
 
     }
+
 }
