@@ -32,36 +32,13 @@ public class PlaceOrderActivity extends AppCompatActivity {
     private SwitchCompat switchDelivery;
     private boolean isDeliveryOn;
     PlaceOrderAdapter placeOrderAdapter;
-    String ItemName;
-    String qty;
-    String image;
-    float subTotalAmount = 0f ;
-    String price;
 
-
-
-    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            ItemName = intent.getStringExtra("item");
-            qty = intent.getStringExtra("quantity");
-
-            Toast.makeText(PlaceOrderActivity.this,ItemName +" "+qty ,Toast.LENGTH_SHORT).show();
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order);
-
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                new IntentFilter("custom-message"));
-
-        Restaurant restaurant = getIntent().getParcelableExtra("RestaurantModel");
-
-//        RestaurantModel restaurantModel = getIntent().getParcelableExtra("RestaurantModel");
+        Restaurant restaurant = getIntent().getParcelableExtra("data");
+        Log.d("final", restaurant.getMenus().toString());
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getIntent().getStringExtra("name"));
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -84,10 +61,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         cartItemsRecyclerView = findViewById(R.id.cartItemsRecyclerView);
 
 
-        if(isDeliveryOn) {
-            tvDeliveryChargeAmount.setText("$"+String.format("%.2f",20.00));
-            subTotalAmount += 20.00;
-        }
+
         buttonPlaceYourOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,15 +103,14 @@ public class PlaceOrderActivity extends AppCompatActivity {
 
 
     private void calculateTotalAmount(Restaurant restaurant) {
-        float subTotalAmount = 0f;
-        price = getIntent().getStringExtra("price");
-        qty = getIntent().getStringExtra("qty");
-        subTotalAmount = Float.parseFloat(price);
-        subTotalAmount += Float.parseFloat(price) * Integer.parseInt(qty);
-        tvSubtotalAmount.setText(("$"+String.format("%.2f", Float.parseFloat(price))));
+        Double subTotalAmount = 0.0;
+        for(Restaurant m : restaurant.getMenus()) {
+            subTotalAmount += m.getCost() * m.getTotalInCart();
+        }
+        tvSubtotalAmount.setText("$"+String.format("%.2f", subTotalAmount));
         if(isDeliveryOn) {
-            tvDeliveryChargeAmount.setText("$"+String.format("%.2f", 20.00));
-            subTotalAmount += 20.00;
+            tvDeliveryChargeAmount.setText("$"+20);
+            subTotalAmount += 20;
         }
         tvTotalAmount.setText("$"+String.format("%.2f", subTotalAmount));
     }
@@ -155,8 +128,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
         }else if(isDeliveryOn && TextUtils.isEmpty(inputState.getText().toString())) {
             inputState.setError("Please enter zip ");
             return;
-        }else if( TextUtils.isEmpty(inputCardNumber.getText().toString())) {
-            inputCardNumber.setError("Please enter card number ");
+        }else if( TextUtils.isEmpty(inputCardNumber.getText().toString()) || inputCardNumber.getText().length() <16){
+            inputCardNumber.setError("Invalid card number ");
             return;
         }else if( TextUtils.isEmpty(inputCardExpiry.getText().toString())) {
             inputCardExpiry.setError("Please enter card expiry ");
@@ -172,6 +145,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
 
     private void initRecyclerView(Restaurant restaurant) {
         cartItemsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Log.e("menus",restaurant.getMenus().toString());
         placeOrderAdapter = new PlaceOrderAdapter(restaurant.getMenus());
         cartItemsRecyclerView.setAdapter(placeOrderAdapter);
     }

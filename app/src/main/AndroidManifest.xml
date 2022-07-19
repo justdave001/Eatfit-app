@@ -37,7 +37,8 @@
             android:exported="false" />
         <activity
             android:name=".PlaceOrderActivity"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".SplashActivity"
             android:exported="false" />

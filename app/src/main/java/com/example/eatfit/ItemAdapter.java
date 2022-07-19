@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Response;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.common.util.ArrayUtils;
 import com.parse.FindCallback;
@@ -41,17 +42,17 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
     List restt = new ArrayList<>();
     int pos;
     ImageView buttonCheckout;
-    List<Restaurant> menuItems = new ArrayList<>();
+
+    MenuListClickListener clickListener;
 
 
-
-
-    public ItemAdapter(List<Restaurant> restaurantList, Context context,String restaurant_name,RecyclerViewClickListener listener,
-                       List restt) {
+    public ItemAdapter(List<Restaurant> restaurantList, Context context, String restaurant_name, RecyclerViewClickListener listener,
+                       List restt, MenuListClickListener clickListener) {
         this.context = context;
         this.restaurantList = restaurantList;
         this.restaurant_name = restaurant_name;
         this.restt=restt;
+        this.clickListener=clickListener;
 
 
     }
@@ -71,7 +72,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         holder.tvName.setText(restaurantList.get(position).getName());
         holder.tvDescription.setText(restaurantList.get(position).getDescription());
         holder.tvCalories.setText(Integer.toString(restaurantList.get(position).getCalories())+"cal");
@@ -84,47 +84,28 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
             @Override
             public void onClick(View v) {
                 Log.d("reslist", Double.toString(restaurantList.get(position).getCost()));
-                Restaurant restaurant  = restaurantList.get(pos);
-//                String restaurant_name =  restaurant.getName();
-//                Double menu_price = restaurant.getCost();
-                menuItems.add(restaurant);
-                if (!restaurant.toString().isEmpty()){
-                    Log.d("reslist", "notempty");
-                }
+                Restaurant restaurant  = restaurantList.get(position);
                 restaurant.setTotalInCart(1);
-//                clickListener.onAddToCartClick(restaurant.getName());
+                clickListener.onAddToCartClick(restaurant);
                 holder.addToCartButton.setVisibility(View.GONE);
                 holder.tvCount.setText(restaurant.getTotalInCart()+"");
-                String ItemName = restaurantList.get(position).getName();
-                String price = Double.toString(restaurantList.get(position).getCost());
-                Log.d("cost", price.toString());
-                String qty = holder.tvName.getText().toString();
-                String image = restaurantList.get(position).getImg();
-                Intent intent = new Intent("custom-message");
-                //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                intent.putExtra("quantity",qty);
-                intent.putExtra("image",image);
-                intent.putExtra("item",ItemName);
-                intent.putExtra("price",price);
-
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
 
         holder.imageMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Restaurant restaurant = restaurantList.get(pos);
+                Restaurant restaurant = restaurantList.get(position);
                 int total = restaurantList.get(holder.getAdapterPosition()).getTotalInCart();
                 total--;
                 if(total > 0 ) {
-                    restaurantList.get(position).setTotalInCart(total);
-
+                    restaurant.setTotalInCart(total);
+                    clickListener.onUpdateCartClick(restaurant);
                     holder.tvCount.setText(total +"");
                 } else {
                     holder.addToCartButton.setVisibility(View.VISIBLE);
-                    restaurantList.get(holder.getAdapterPosition()).setTotalInCart(total);
-//                    clickListener.onRemoveFromCartClick(restaurant);
+                    restaurant.setTotalInCart(total);
+                    clickListener.onRemoveFromCartClick(restaurant);
                 }
             }
         });
@@ -136,9 +117,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
                 Log.d("menuu",restaurantList.get(position).toString());
                 int total = restaurant.getTotalInCart();
                 total++;
-                if(total <= 100) {
+                if(total <= 100 && total >0) {
                     restaurant.setTotalInCart(total);
-//                    clickListener.onUpdateCartClick(restaurant);
+                    clickListener.onUpdateCartClick(restaurant);
                     holder.tvCount.setText(total +"");
                 }
             }
@@ -230,5 +211,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
 
 
     }
-
+    public interface MenuListClickListener {
+        public void onAddToCartClick(Restaurant restaurant);
+        public void onUpdateCartClick(Restaurant restaurant);
+        public void onRemoveFromCartClick(Restaurant restaurant);
+    }
 }

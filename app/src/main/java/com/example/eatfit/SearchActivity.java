@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -34,6 +35,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.gson.JsonParser;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
-    public BottomNavigationView bottomNavigationView;
+    public ChipNavigationBar bottomNavigationView;
     Spinner sp_type;
     ImageView findBtn;
     Location myLocation;
@@ -62,6 +64,31 @@ public class SearchActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        bottomNavigationView = findViewById(R.id.bottom_navigator);
+
+
+
+        bottomNavigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int id) {
+                switch (id){
+                    case R.id.home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
+                        break;
+                    case R.id.search:
+                        break;
+                    case R.id.person:
+                        startActivity(new Intent(getApplicationContext(), PersonActivity.class));
+                        overridePendingTransition(0,0);
+                        break;
+                }
+            }
+
+
+        });
+
+
 
         sp_type = findViewById(R.id.sp_type);
         findBtn = findViewById(R.id.findBtn);
@@ -111,33 +138,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
-        bottomNavigationView = findViewById(R.id.bottom_navigator);
-        bottomNavigationView.setSelectedItemId(R.id.home);
-
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-                        return true;
-
-                    case R.id.search:
-                        return true;
-
-                    case R.id.person:
-                        startActivity(new Intent(getApplicationContext(), PersonActivity.class));
-
-
-                        return true;
-
-                }
-                return false;
-            }
-        });
 
 
     }

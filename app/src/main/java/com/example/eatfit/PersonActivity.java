@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -46,7 +47,7 @@ import java.util.Date;
 
 public class PersonActivity extends AppCompatActivity {
     LinearLayout logout;
-    public BottomNavigationView bottomNavigationView;
+    public ChipNavigationBar bottomNavigationView;
     public static int RESULT_LOAD_CAMERA_IMAGE = 2;
     public static int RESULT_LOAD_GALLERY_IMAGE = 1;
     EditText etUsername;
@@ -79,7 +80,26 @@ public class PersonActivity extends AppCompatActivity {
                " "+ currentUser.getString("l_name");
 
         userName.setText(name);
+        bottomNavigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int id) {
+                Activity activity = null;
+                switch (id){
+                    case R.id.home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0,0);
+                        break;
+                    case R.id.search:
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                        overridePendingTransition(0,0);
+                        break;
+                    case R.id.person:
+                        break;
+                }
+            }
 
+
+        });
 
         imgPhoto.setOnClickListener(chooseImageListener);
 //        imgPhoto.setOnClickListener(uploadListener);
@@ -121,29 +141,7 @@ public class PersonActivity extends AppCompatActivity {
             });
 
 
-            bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.home:
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
-                            return true;
-
-                        case R.id.search:
-                            startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-
-                            return  true;
-
-                        case R.id.person:
-                            return true;
-
-
-
-                    }
-                    return false;
-                }
-            });
 
             logout = findViewById(R.id.logout);
             logout.setOnClickListener(new View.OnClickListener() {

@@ -1,5 +1,6 @@
 package com.example.eatfit;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceOrderAdapter extends RecyclerView.Adapter<PlaceOrderAdapter.MyViewHolder> {
-    private List<Restaurant> restaurantList;
+    List<Restaurant> restaurantList;
+
 
     public PlaceOrderAdapter(List<Restaurant> restaurantList) {
         this.restaurantList = restaurantList;
@@ -29,7 +32,8 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter<PlaceOrderAdapter.My
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view  = LayoutInflater.from(parent.getContext()).inflate(R.layout.place_order_items, parent, false);
-        return  new MyViewHolder(view);
+        return new MyViewHolder(view);
+
     }
 
     @Override
@@ -44,6 +48,7 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter<PlaceOrderAdapter.My
 
     @Override
     public int getItemCount() {
+        Log.e("size", restaurantList.toString());
         return restaurantList.size();
     }
 

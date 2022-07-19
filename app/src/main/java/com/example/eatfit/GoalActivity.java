@@ -49,17 +49,19 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class GoalActivity extends AppCompatActivity{
+public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuListClickListener{
 
     RecyclerView rvItems;
     LinearLayoutManager layoutManager;
-
+    ItemAdapter.MenuListClickListener clickListener;
     ItemAdapter itemAdapter;
     public String BASE_URL = "https://apimocha.com/eatfit/example";
     List<Restaurant> restaurantList;
@@ -72,13 +74,11 @@ public class GoalActivity extends AppCompatActivity{
     List<Restaurant> menuList;
     Restaurant restaurant;
     String restaurant_name;
-    List<Restaurant> menuItems = new ArrayList<>();
-//    List restaurant  = new ArrayList<>();
+
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal);
         context = getApplicationContext();
@@ -87,10 +87,9 @@ public class GoalActivity extends AppCompatActivity{
         buttonCheckout = findViewById(R.id.buttonCheckout);
         restaurantList =  new ArrayList<>();
 
-        Restaurant restaurant = new Restaurant();
-
 
         extractRestaurants();
+        Restaurant restaurant = new Restaurant();
         buttonCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,21 +97,18 @@ public class GoalActivity extends AppCompatActivity{
                     Toast.makeText(GoalActivity.this, "Please add some items in cart.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-
+                restaurant.setMenus(itemsInCartList);
                 Intent i = new Intent(GoalActivity.this, PlaceOrderActivity.class);
-                i.putExtra("RestaurantModel", restaurant);
-                i.putExtra("name", restaurant_name);
-                i.putExtra("price", Double.toString(restaurantList.get(itemAdapter.pos).getCost()));
-                i.putExtra("qty", Integer.toString(restaurantList.get(itemAdapter.pos).getTotalInCart()))
-                ;
-                startActivityForResult(i, 1000);
+                i.putExtra("data", restaurant);
+                Log.d("resst",restaurant.getMenus().toString());
+                startActivity(i);
+
             }
         });
 
 
-
     }
+
 
 
     private void extractRestaurants() {
@@ -178,6 +174,7 @@ public class GoalActivity extends AppCompatActivity{
                                     }
                                     restaurantList.add(restaurant);
 
+
                                 }
                             }}
 
@@ -205,18 +202,16 @@ public class GoalActivity extends AppCompatActivity{
 
                                     restaurantList.add(restaurant);
 
+
                                 }
                             }}
+                        initRecyclerView();
+
 
 
                     }
 
-                    setOnClickListener();
-                    layoutManager = new LinearLayoutManager(getApplicationContext());
-                    rvItems.setLayoutManager(layoutManager);
-                    itemAdapter = new ItemAdapter(restaurantList, context, restaurant_name,listener, restt);
-                    rvItems.setAdapter(itemAdapter);
-                    setOnClickListener();
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -244,6 +239,15 @@ public class GoalActivity extends AppCompatActivity{
 
     }
 
+    private void initRecyclerView() {
+        setOnClickListener();
+        layoutManager = new LinearLayoutManager(getApplicationContext());
+        rvItems.setLayoutManager(layoutManager);
+        itemAdapter = new ItemAdapter(restaurantList, context, restaurant_name,listener, restt, this);
+        rvItems.setAdapter(itemAdapter);
+        setOnClickListener();
+    }
+
     private void setOnClickListener() {
         listener=new ItemAdapter.RecyclerViewClickListener() {
             @Override
@@ -262,54 +266,55 @@ public class GoalActivity extends AppCompatActivity{
             }
         };
     }
-//    @Override
-//    public void onAddToCartClick(Restaurant restaurant) {
-//        if(itemsInCartList == null) {
-//            itemsInCartList = new ArrayList<>();
-//        }
-//        Log.d("carts", itemsInCartList.toString());
-//        itemsInCartList.add(restaurant);
-//        Log.d("cartlist", itemsInCartList.toString());
-//        totalItemInCart = 0;
-//        for(Restaurant m : itemsInCartList) {
-//            Log.d("memm", m.toString());
-//            totalItemInCart = totalItemInCart + m.getTotalInCart();
-//        }
-////        buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
-//    }
-//
-//    @Override
-//    public void onUpdateCartClick(Restaurant restaurant) {
-//        if(itemsInCartList.contains(restaurant)) {
-//            int index = itemsInCartList.indexOf(restaurant);
-//            itemsInCartList.remove(index);
-//            itemsInCartList.add(index, restaurantList.get(itemAdapter.pos));
-//
-//            totalItemInCart = 0;
-//
-//            for(Restaurant m : itemsInCartList) {
-//                totalItemInCart = totalItemInCart + m.getTotalInCart();
-//            }
-////            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
-//        }
-//    }
-//
-//    @Override
-//    public void onRemoveFromCartClick(Restaurant restaurant) {
-//        if(itemsInCartList.contains(restaurant)) {
-//            itemsInCartList.remove(restaurant);
-//            totalItemInCart = 0;
-//
-//            for(Restaurant m : itemsInCartList) {
-//                totalItemInCart = totalItemInCart + m.getTotalInCart();
-//            }
-////            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
-//        }
-//    }
 
 
+    @Override
+    public void onAddToCartClick(Restaurant restaurant) {
+        if(itemsInCartList == null) {
+            itemsInCartList = new ArrayList<>();
+        }
+        itemsInCartList.add(restaurant);
 
 
+        totalItemInCart = 0;
+
+        for(Restaurant m : itemsInCartList) {
+            totalItemInCart += m.getTotalInCart();
+        }
+        Log.e("restaureanr", Integer.toString(restaurant.getTotalInCart()));
+
+        Log.d("casrt", Integer.toString(totalItemInCart));
+      /*  buttonCheckout.setText("Checkout (" +totalItemInCart +") items");*/
+    }
+
+    @Override
+    public void onUpdateCartClick(Restaurant restaurant) {
+        if(itemsInCartList.contains(restaurant)) {
+            int index = itemsInCartList.indexOf(restaurant);
+            itemsInCartList.remove(index);
+            itemsInCartList.add(index, restaurant);
+
+            totalItemInCart = 0;
+
+            for(Restaurant m : itemsInCartList) {
+                totalItemInCart = totalItemInCart + m.getTotalInCart();
+            }
+//            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+        }
+    }
+
+    @Override
+    public void onRemoveFromCartClick(Restaurant restaurant) {
+        if(itemsInCartList.contains(restaurant)) {
+            itemsInCartList.remove(restaurant);
+            totalItemInCart = 0;
+
+            for(Restaurant m : itemsInCartList) {
+                totalItemInCart = totalItemInCart + m.getTotalInCart();
+            }
+//            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+        }
+    }
 }
 
 

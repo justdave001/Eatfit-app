@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Restaurant implements Parcelable {
+public class Restaurant implements Parcelable{
     public String name;
     public int calories;
     public double cost;
@@ -20,7 +20,7 @@ public class Restaurant implements Parcelable {
     List<Restaurant> restaurantList;
 
 
-    private float price;
+
     int totalInCart;
 
     public Restaurant(){}
@@ -40,6 +40,7 @@ public class Restaurant implements Parcelable {
 
     }
 
+
     protected Restaurant(Parcel in) {
         name = in.readString();
         calories = in.readInt();
@@ -50,7 +51,6 @@ public class Restaurant implements Parcelable {
         fat = in.readInt();
         img = in.readString();
         restaurantList = in.createTypedArrayList(Restaurant.CREATOR);
-        price = in.readFloat();
         totalInCart = in.readInt();
     }
 
@@ -146,7 +146,6 @@ public class Restaurant implements Parcelable {
         this.img=img;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -155,8 +154,16 @@ public class Restaurant implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeFloat(price);
+        dest.writeInt(calories);
+        dest.writeDouble(cost);
+        dest.writeInt(protein);
+        dest.writeInt(phoneNumber);
+        dest.writeString(description);
+        dest.writeInt(fat);
         dest.writeString(img);
+        dest.writeTypedList(restaurantList);
         dest.writeInt(totalInCart);
     }
 }
+
+

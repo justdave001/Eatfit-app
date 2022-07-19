@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class DetailsActivity extends AppCompatActivity {
     TextView marker;
@@ -26,7 +28,7 @@ public class DetailsActivity extends AppCompatActivity {
     AppCompatButton sMoney;
     String cost;
     Restaurant restaurant = new Restaurant();
-    BottomNavigationView bottomNavigationView;
+    ChipNavigationBar bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,26 +42,27 @@ public class DetailsActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("title");
         marker.setText(title);
         bottomNavigationView = findViewById(R.id.bottom_navigator);
-        bottomNavigationView.setSelectedItemId(R.id.home);
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener()  {
+        bottomNavigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+            public void onItemSelected(int id) {
+                Activity activity = null;
+                switch (id){
                     case R.id.home:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        return true;
-
+                        overridePendingTransition(0,0);
+                        break;
                     case R.id.search:
-                        return true;
-
+                        break;
                     case R.id.person:
                         startActivity(new Intent(getApplicationContext(), PersonActivity.class));
-                        return true;
+                        overridePendingTransition(0,0);
+                        break;
 
                 }
-                return false;
             }
+
+
         });
 
 
@@ -70,7 +73,7 @@ public class DetailsActivity extends AppCompatActivity {
                 Intent i = new Intent(DetailsActivity.this, GoalActivity.class);
                 i.putExtra("restaurant_name", resname);
                 i.putExtra("button_id","0");
-                i.putExtra("restaurantModel",restaurant);
+
                 startActivity(i);
             }
         });

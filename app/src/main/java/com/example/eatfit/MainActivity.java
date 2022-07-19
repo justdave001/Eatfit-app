@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -37,7 +39,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     public NavigationBarView.OnItemSelectedListener selectedListener;
-    public BottomNavigationView bottomNavigationView;
+    public ChipNavigationBar bottomNavigationView;
 
     private RecyclerView recyclerView;
     private HomeAdapter homeAdapter;
@@ -55,6 +57,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        bottomNavigationView = findViewById(R.id.bottom_navigator);
+
+
+
+        bottomNavigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int id) {
+                Activity activity = null;
+                switch (id){
+                    case R.id.home:
+                        break;
+                    case R.id.search:
+                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
+                        overridePendingTransition(0,0);
+                        break;
+                    case R.id.person:
+                        startActivity(new Intent(getApplicationContext(), PersonActivity.class));
+                        overridePendingTransition(0,0);
+                        break;
+
+                }
+            }
+
+
+        });
         recyclerView = findViewById(R.id.mainRv);
         modelList = new ArrayList<>();
         getDataFromServer();
@@ -63,26 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        bottomNavigationView = findViewById(R.id.bottom_navigator);
-        bottomNavigationView.setSelectedItemId(R.id.home);
-
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener()  {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.home:
-                        return true;
-                    case R.id.search:
-                        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-                        return true;
-                    case R.id.person:
-                        startActivity(new Intent(getApplicationContext(), PersonActivity.class));
-                        return true;
-                }
-                return false;
-            }
-        });
     }
 
 
