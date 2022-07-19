@@ -14,9 +14,9 @@ public class OrderSuccessfulActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_successful);
 
-        Restaurant restaurant = getIntent().getParcelableExtra("RestaurantModel");
+        String resname = getIntent().getStringExtra("resname");
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(restaurant.getName());
+        actionBar.setTitle(resname);
         actionBar.setDisplayHomeAsUpEnabled(false);
 
 

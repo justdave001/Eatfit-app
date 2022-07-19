@@ -253,20 +253,24 @@
             android:textSize="18sp"
             android:textStyle="bold"/>
 
-        <TextView android:id="@+id/buttonPlaceYourOrder"
+        <TextView
+            android:id="@+id/buttonPlaceYourOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTotal"
+            android:layout_margin="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/button_bg"
+            android:gravity="center"
+            android:padding="10dp"
             android:text="Place your order"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/button_bg"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.526"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTotal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="30dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -114,9 +114,6 @@ public class MainActivity extends AppCompatActivity {
                     for (ParseObject object:objects){
                         String restaurantName = object.getString("res_name");
                         menuItems= (object.getList("menu_items"));
-                        String objid = object.getObjectId();
-                        Log.d("id", objid);
-
                         if (!hash_Set.contains(restaurantName)) {
                             modelList.add(new HomeModel(restaurantName, menuItems));
                         }

@@ -24,6 +24,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
+
 public class PlaceOrderActivity extends AppCompatActivity {
 
      EditText inputName, inputAddress, inputCity, inputState, inputZip,inputCardNumber, inputCardExpiry, inputCardPin ;
@@ -37,10 +45,11 @@ public class PlaceOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order);
+        String resname = getIntent().getStringExtra("resname");
         Restaurant restaurant = getIntent().getParcelableExtra("data");
         Log.d("final", restaurant.getMenus().toString());
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getIntent().getStringExtra("name"));
+        actionBar.setTitle(resname);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         inputName = findViewById(R.id.inputName);
@@ -66,6 +75,38 @@ public class PlaceOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onPlaceOrderButtonClick(restaurant);
+                List<Restaurant> add = restaurant.getMenus();
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ParseObject rname = new ParseObject("Restaurants");
+                rname.put("user", currentUser);
+                rname.put("res_name", resname);
+                for (int i=0;i<=add.size()-1;i++){
+                    rname.addUnique("menu_items", add.get(i).getName());
+                }
+                rname.saveInBackground();
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
+                query.whereEqualTo("user", currentUser);
+                query.whereEqualTo("res_name", resname);
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        if (e==null){
+                            for (ParseObject rname:objects){
+                                if (rname.getString("res_name").equals(resname)
+                                ) {
+                                    for (int i=0;i<=add.size()-1;i++){
+                                        rname.addUnique("menu_items", add.get(i).getName());
+                                    }
+                                    rname.saveInBackground();
+                                }
+                            }
+
+                        }
+
+                    }
+
+                });
             }
         });
 
@@ -80,7 +121,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
                     tvDeliveryChargeAmount.setVisibility(View.VISIBLE);
                     tvDeliveryCharge.setVisibility(View.VISIBLE);
                     isDeliveryOn = true;
-
+                    calculateTotalAmount(restaurant);
 
 
                 } else {
@@ -109,8 +150,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
         }
         tvSubtotalAmount.setText("$"+String.format("%.2f", subTotalAmount));
         if(isDeliveryOn) {
-            tvDeliveryChargeAmount.setText("$"+20);
-            subTotalAmount += 20;
+            tvDeliveryChargeAmount.setText("$"+"20.00");
+            subTotalAmount += 20.00;
         }
         tvTotalAmount.setText("$"+String.format("%.2f", subTotalAmount));
     }
@@ -139,7 +180,9 @@ public class PlaceOrderActivity extends AppCompatActivity {
             return;
         }
         //start success activity..
+        String resname = getIntent().getStringExtra("resname");
         Intent i = new Intent(PlaceOrderActivity.this, OrderSuccessfulActivity.class);
+        i.putExtra("resname", resname);
         startActivityForResult(i, 1000);
     }
 

@@ -1,6 +1,7 @@
 package com.example.eatfit;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -89,6 +90,10 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
 
 
         extractRestaurants();
+        ActionBar actionBar = getSupportActionBar();
+        String resname = getIntent().getStringExtra("restaurant_name");
+        actionBar.setTitle(resname);
+        actionBar.setDisplayHomeAsUpEnabled(true);
         Restaurant restaurant = new Restaurant();
         buttonCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +104,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                 }
                 restaurant.setMenus(itemsInCartList);
                 Intent i = new Intent(GoalActivity.this, PlaceOrderActivity.class);
+                i.putExtra("resname", resname);
                 i.putExtra("data", restaurant);
                 Log.d("resst",restaurant.getMenus().toString());
                 startActivity(i);
