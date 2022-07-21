@@ -1,20 +1,24 @@
 package com.example.eatfit;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -40,6 +44,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.res_item,parent,false);
+
+
         return new ItemViewHolder(view);
     }
 
@@ -84,44 +90,79 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
 
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                switch (direction){
+                    case ItemTouchHelper.LEFT:
+                        Object removee = list.remove(viewHolder.getAdapterPosition());
 
-                    Object removee = list.remove(viewHolder.getAdapterPosition());
 
 
+                        ParseUser currentUser = ParseUser.getCurrentUser();
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
+                        query.whereEqualTo("user", currentUser);
+                        query.whereEqualTo("res_name",resname);
 
-                    ParseUser currentUser = ParseUser.getCurrentUser();
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
-                    query.whereEqualTo("user", currentUser);
-                    query.whereEqualTo("res_name",resname);
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> objects, ParseException e) {
+                                if (e==null){
+                                    for (ParseObject removed:objects){
+                                        templist = removed.getList("menu_items");
+                                        removed.remove("menu_items");
+                                        if (templist.contains(removee)){
+                                            templist.remove(removee);
+                                            removed.addAll("menu_items", templist);
+                                            removed.saveInBackground();
 
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> objects, ParseException e) {
-                            if (e==null){
-                                for (ParseObject removed:objects){
-                                    templist = removed.getList("menu_items");
-
-                                    if (templist.contains(removee)){
-                                        templist.remove(removee);
-                                        removed.put("menu_items", templist);
-                                        removed.saveInBackground();
-
+                                        }
                                     }
+
                                 }
 
                             }
 
-                        }
-
-                    });
+                        });
 //                    list.remove(viewHolder.getAdapterPosition());
-                    notifyDataSetChanged();
+                        notifyDataSetChanged();
+
+                        Snackbar.make(viewHolder.itemView,removee.toString(), Snackbar.LENGTH_LONG )
+                                .setAction("Undo", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        query.whereEqualTo("user", currentUser);
+                                        query.whereEqualTo("res_name",resname);
+
+                                        query.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> objects, ParseException e) {
+                                                if (e==null){
+                                                    for (ParseObject removed:objects){
+                                                        removed.add("menu_items", removee);
+                                                        removed.saveInBackground();
+
+                                                    }
+
+                                                }
+
+                                            }
+
+                                        });
+                                        notifyDataSetChanged();
+                                    }
+                                }).show();
+                        break;
+
+                    case ItemTouchHelper.RIGHT:
+                        break;
+                }
+
 
 
                 }
             };
 
-    @Override
+
+
+@Override
     public int getItemCount() {
         return modelList.size();
     }
@@ -132,7 +173,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
         public TextView mTextView;
         public ImageView mArrowImage;
         public RecyclerView nestedRv;
-
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 

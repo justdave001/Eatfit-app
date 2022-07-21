@@ -129,7 +129,6 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
 
                     for (int i = 0; i < rest.length(); i++) {
                         JSONObject jsonObject1 = rest.getJSONObject(i);
-
                         if(jsonObject1.getString("name").equals(getIntent().getStringExtra("restaurant_name")) && getIntent().getStringExtra("button_id").equals("0")){
                           restaurant_name = (jsonObject1.getString("name"));
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");

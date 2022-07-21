@@ -6,21 +6,36 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.snackbar.Snackbar;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -50,15 +65,18 @@ public class MainActivity extends AppCompatActivity {
     Set<String> hash_Set = new HashSet<String>();
     List menuItems = new ArrayList<>();
     ParseUser currentUser = ParseUser.getCurrentUser();
+RecyclerView nestedRv;
+     List list = new ArrayList<>();
+    List templist = new ArrayList<>();
+    private ViewGroup MainView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         bottomNavigationView = findViewById(R.id.bottom_navigator);
-
 
 
         bottomNavigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
@@ -83,15 +101,13 @@ public class MainActivity extends AppCompatActivity {
 
         });
         recyclerView = findViewById(R.id.mainRv);
+
         modelList = new ArrayList<>();
         getDataFromServer();
         prepareRV();
 
 
-
-
     }
-
 
 
     private void prepareRV() {

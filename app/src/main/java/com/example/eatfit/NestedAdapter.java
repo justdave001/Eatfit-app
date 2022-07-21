@@ -22,7 +22,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
     @Override
     public NestedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nested_item, parent,
-        false
+                false
         );
 
         return new NestedViewHolder(v);

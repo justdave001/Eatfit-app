@@ -126,7 +126,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 //initialize url
                 String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" + //url
-                        "?location=" + currentLat + "," + currentLong + "&radius=5000" + //nearby radius
+                        "?location=" + currentLat + "," + currentLong + "&radius=100000" + //nearby radius
                         "&types=" + placeList[i] +
                         "&sensor=true" +
                         "&key=" + getResources().getString(R.string.google_map_key);
@@ -146,22 +146,9 @@ public class SearchActivity extends AppCompatActivity {
         //Initialize task Location
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
@@ -169,19 +156,15 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Location location) {
                 if(location != null){
-                    //when location is valid
-                    //get lat
                     currentLat = location.getLatitude();
 
-                    //get current long
                     currentLong = location.getLongitude();
-                    //SYNC MAp
                     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(@NonNull GoogleMap googleMap) {
-                            //when map is ready
+
                             mMap = googleMap;
-                            //zoom to current location on map
+
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(currentLat,currentLong), 13
 
@@ -210,7 +193,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 44) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //WHEN PERMISSION IS GRANTED
+
                 getCurrrentLocation();
 
             }
@@ -357,29 +340,5 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
     }
-//    @Override
-//    public void onLocationChanged(Location location){
-//        myLocation = location;
-//        if (myLocation!=null){
-//            currentLat = location.getLatitude();
-//            currentLong = location.getLongitude();
-//
-//            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.location);
-//            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLat,currentLong),13));
-//            MarkerOptions options = new MarkerOptions();
-//            //set position
-//            options.position(new LatLng(currentLat, currentLong));
-//            //set title
-//            options.title("you");
-//            options.icon(icon);
-//            //add marker on map
-//            mMap.addMarker(options);
-//
-//            getNearby();
-//        }
-//
-//    }
-//
-//    private void getNearby() {
-//    }
+
 }
