@@ -1,5 +1,7 @@
 package com.example.eatfit;
 
+import static android.provider.Settings.System.getString;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
@@ -27,6 +29,8 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder> {
 
@@ -81,6 +85,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
         });
 
     }
+    List favItems = new ArrayList<>();
     ItemTouchHelper.SimpleCallback simpleCallback =
             new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
                 @Override
@@ -90,13 +95,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
 
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                final  int position = viewHolder.getAdapterPosition();
                 switch (direction){
                     case ItemTouchHelper.LEFT:
-                        Object removee = list.remove(viewHolder.getAdapterPosition());
+                        Object removee = list.remove(position);
 
-
-
-                        ParseUser currentUser = ParseUser.getCurrentUser();
                         ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
                         query.whereEqualTo("user", currentUser);
                         query.whereEqualTo("res_name",resname);
@@ -136,7 +140,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
                                             public void done(List<ParseObject> objects, ParseException e) {
                                                 if (e==null){
                                                     for (ParseObject removed:objects){
-                                                        removed.add("menu_items", removee);
+                                                        removed.addUnique("menu_items", removee);
                                                         removed.saveInBackground();
 
                                                     }
@@ -152,14 +156,86 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
                         break;
 
                     case ItemTouchHelper.RIGHT:
+                        String itemName = list.get(position).toString();
+                        favItems.add(itemName);
+                        Log.d("faves", favItems.toString());
+                        for (int i=0; i<= favItems.size();i++){
+                            currentUser.addAllUnique("favorites", favItems);
+                        }
+                        currentUser.saveInBackground();
+                        Object rid = list.remove(position);
+                        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Restaurants");
+                        query1.whereEqualTo("user", currentUser);
+                        query1.whereEqualTo("res_name",resname);
+
+                        query1.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> objects, ParseException e) {
+                                if (e==null){
+                                    for (ParseObject removed:objects){
+                                        templist = removed.getList("menu_items");
+                                        removed.remove("menu_items");
+                                        if (templist.contains(rid)){
+                                            templist.remove(rid);
+                                            removed.addAll("menu_items", templist);
+                                            removed.saveInBackground();
+
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+                        });
+                        notifyDataSetChanged();
+
+                        Snackbar.make(viewHolder.itemView,rid.toString()+" saved!", Snackbar.LENGTH_LONG )
+                                .setAction("Undo", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        query1.whereEqualTo("user", currentUser);
+                                        query1.whereEqualTo("res_name",resname);
+
+                                        query1.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> objects, ParseException e) {
+                                                if (e==null){
+                                                    for (ParseObject removed:objects){
+                                                        removed.addUnique("menu_items", rid);
+                                                        removed.saveInBackground();
+
+                                                    }
+
+                                                }
+
+                                            }
+
+                                        });
+                                        notifyDataSetChanged();
+                                    }
+                                }).show();
+
                         break;
                 }
 
 
 
                 }
+                @Override
+                public void onChildDraw (Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive){
+                    new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                            .addSwipeLeftBackgroundColor(ContextCompat.getColor(context, R.color.red))
+                            .addSwipeLeftActionIcon(R.drawable.ic_delete)
+                            .addSwipeRightBackgroundColor(ContextCompat.getColor(context, R.color.green))
+                            .addSwipeLeftLabel(context.getString(R.string.delete))
+                            .addSwipeRightLabel(context.getString(R.string.save))
+                            .addSwipeRightActionIcon(R.drawable.ic_save)
+                            .create()
+                            .decorate();
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                }
             };
-
 
 
 @Override

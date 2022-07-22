@@ -59,7 +59,7 @@ public class PersonActivity extends AppCompatActivity {
     public String mCurrentPhotoPath;
     public File cameraImageFile;
     TextView userName;
-
+    ImageView savedIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class PersonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_person);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-
+        savedIcon = findViewById(R.id.savedIcon);
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         imgPhoto = findViewById(R.id.imgPhoto);
         etUsername = findViewById(R.id.etUsername);
@@ -80,6 +80,14 @@ public class PersonActivity extends AppCompatActivity {
                " "+ currentUser.getString("l_name");
 
         userName.setText(name);
+        savedIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PersonActivity.this, Favorites.class);
+                startActivity(intent);
+
+            }
+        });
         bottomNavigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int id) {

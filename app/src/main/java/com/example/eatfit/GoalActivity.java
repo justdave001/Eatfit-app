@@ -1,3 +1,4 @@
+
 package com.example.eatfit;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +33,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -75,8 +78,9 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
     List<Restaurant> menuList;
     Restaurant restaurant;
     String restaurant_name;
-
-
+    ShimmerFrameLayout shimmerFrameLayout;
+    int temp=0;
+    List prices = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,12 +88,21 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         setContentView(R.layout.activity_goal);
         context = getApplicationContext();
         rvItems = findViewById(R.id.rvItems);
-
+        shimmerFrameLayout = findViewById(R.id.shimmerLay);
         buttonCheckout = findViewById(R.id.buttonCheckout);
         restaurantList =  new ArrayList<>();
 
 
         extractRestaurants();
+        rvItems.setVisibility(View.INVISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
+        Handler handler = new Handler();
+        handler.postDelayed(()->{
+            rvItems.setVisibility(View.VISIBLE);
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.INVISIBLE);
+
+        }, 3000);
         ActionBar actionBar = getSupportActionBar();
         String resname = getIntent().getStringExtra("restaurant_name");
         actionBar.setTitle(resname);
@@ -130,33 +143,42 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                     for (int i = 0; i < rest.length(); i++) {
                         JSONObject jsonObject1 = rest.getJSONObject(i);
                         if(jsonObject1.getString("name").equals(getIntent().getStringExtra("restaurant_name")) && getIntent().getStringExtra("button_id").equals("0")){
-                          restaurant_name = (jsonObject1.getString("name"));
+                            restaurant_name = (jsonObject1.getString("name"));
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
-                        for (int j = 0; j < menu.length(); j++) {
+                            for (int j = 0; j < menu.length(); j++) {
+                                JSONObject items = menu.getJSONObject(j);
+                                if (items.has("calories") && items.getInt("calories")<700 && items.getInt("fat") < 60)  {
 
-                            JSONObject items = menu.getJSONObject(j);
-                            if (items.has("calories") && items.getInt("calories")<700 && items.getInt("fat") < 60)  {
-                                Restaurant restaurant = new Restaurant();
-                                restaurant.setName(items.getString("name"));
-                                 restt.add(items.getString("name"));
-                                restaurant.setDescription(items.getString("description"));
-                                restaurant.setCost(items.getInt("price"));
-                                if (items.has("image")) {
-                                    restaurant.setImg(items.getString("image"));
+                                    Restaurant restaurant = new Restaurant();
+                                    restaurant.setName(items.getString("name"));
+                                    restt.add(items.getString("name"));
+                                    restaurant.setDescription(items.getString("description"));
+                                    restaurant.setCost(items.getInt("price"));
+                                    if (items.has("image")) {
+                                        restaurant.setImg(items.getString("image"));
+                                    }
+                                    if (items.has("calories") ) {
+                                        restaurant.setCalories(items.getInt("calories"));
+                                        restaurant.setFat(items.getInt("fat"));
+                                        restaurant.setProtein(items.getInt("protein"));
+
+                                    }
+                                    restaurantList.add(restaurant);
                                 }
-                                if (items.has("calories")) {
-                                    restaurant.setCalories(items.getInt("calories"));
-                                    restaurant.setFat(items.getInt("fat"));
-                                    restaurant.setProtein(items.getInt("protein"));
 
-                                }
-                                restaurantList.add(restaurant);
+                            }List<Restaurant> restaurantList1 = new ArrayList<>();
 
+                            for (Restaurant r: restaurantList){prices.add(r.getCalories());
+                            }Collections.sort(prices);
+                            for (int i1=0; i1<prices.size();i1++){
+                                for (Restaurant r: restaurantList){
+                                    if (prices.get(i1).equals(r.getCalories())){
+                                        restaurantList1.add(r);
+                                    }
 
-
-                            }
-
-                        } }
+                                }}
+                            restaurantList = restaurantList1;
+                            prices.clear(); }
                         else if(jsonObject1.getString("name").equals(getIntent().getStringExtra("restaurant_name")) && getIntent().getStringExtra("button_id").equals("1")){
                             restaurant_name = (jsonObject1.getString("name"));
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
@@ -181,11 +203,26 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
 
 
                                 }
-                            }}
+                            }
+                            List<Restaurant> restaurantList1 = new ArrayList<>();
+
+                            for (Restaurant r: restaurantList){prices.add(r.getCalories());
+                            }Collections.sort(prices, Collections.reverseOrder());
+
+                            for (int i1=0; i1<prices.size();i1++){
+                                for (Restaurant r: restaurantList){
+                                    if (prices.get(i1).equals(r.getCalories())){
+                                        restaurantList1.add(r);
+                                    }
+
+                                }}
+                            restaurantList = restaurantList1;
+                        prices.clear();}
 
                         else if(jsonObject1.getString("name").equals(getIntent().getStringExtra("restaurant_name")) && getIntent().getStringExtra("button_id").equals("2")){
                             restaurant_name = (jsonObject1.getString("name"));
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
+
                             for (int j = 0; j < menu.length(); j++) {
 
                                 JSONObject items = menu.getJSONObject(j);
@@ -204,12 +241,27 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                                         restaurant.setFat(items.getInt("fat"));
                                         restaurant.setProtein(items.getInt("protein"));
                                     }
-
                                     restaurantList.add(restaurant);
 
 
+
                                 }
-                            }}
+                            }
+                            List<Restaurant> restaurantList1 = new ArrayList<>();
+                            for (Restaurant r: restaurantList){
+                                prices.add(r.getCost());
+                            }Collections.sort(prices);
+                            Log.d("sort",prices.toString());
+                            for (int i1=0; i1<prices.size();i1++){
+                              for (Restaurant r: restaurantList){
+                                    if (prices.get(i1).equals(r.getCost())){
+                                        restaurantList1.add(r);
+                                    }
+
+                                }}
+                            restaurantList = restaurantList1;
+                            prices.clear();
+                        }
                         initRecyclerView();
 
 
@@ -289,7 +341,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         Log.e("restaureanr", Integer.toString(restaurant.getTotalInCart()));
 
         Log.d("casrt", Integer.toString(totalItemInCart));
-      /*  buttonCheckout.setText("Checkout (" +totalItemInCart +") items");*/
+        /*  buttonCheckout.setText("Checkout (" +totalItemInCart +") items");*/
     }
 
     @Override
@@ -321,5 +373,3 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         }
     }
 }
-
-

@@ -42,6 +42,9 @@ public class SignupTabFragment extends Fragment {
                 if(!username.getText().toString().isEmpty() && !signup_pass.getText().toString().isEmpty()){
                     ParseUser user = new ParseUser();
                     user.setUsername(username.getText().toString());
+                    user.put("f_name", f_name.getText().toString());
+                    user.put("l_name", l_name.getText().toString());
+
                     user.setPassword(signup_pass.getText().toString());
 
                     user.signUpInBackground(new SignUpCallback() {

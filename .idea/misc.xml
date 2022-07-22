@@ -7,7 +7,9 @@
         <entry key="app/src/main/res/drawable-anydpi/find.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable-anydpi/home.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable-anydpi/ic_cart.xml" value="0.128" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_delete.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-anydpi/ic_down.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_save.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-anydpi/person.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/add.xml" value="0.2485" />
@@ -31,28 +33,32 @@
         <entry key="app/src/main/res/drawable/vir_bg.xml" value="0.237" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_facebook_auth.xml" value="0.18297101449275363" />
+        <entry key="app/src/main/res/layout/activity_favorites.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_goal.xml" value="0.19766998291015625" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_order_successful.xml" value="0.2609375" />
-        <entry key="app/src/main/res/layout/activity_person.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_person.xml" value="0.21029205322265626" />
         <entry key="app/src/main/res/layout/activity_place_order.xml" value="0.10127349853515624" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.30245666503906243" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/cart_action_item.xml" value="1.5" />
         <entry key="app/src/main/res/layout/child_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_list.xml" value="0.5508529663085938" />
+        <entry key="app/src/main/res/layout/fav_item.xml" value="0.165" />
         <entry key="app/src/main/res/layout/group_item.xml" value="0.16540020263424518" />
         <entry key="app/src/main/res/layout/home_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_items.xml" value="0.1" />
         <entry key="app/src/main/res/layout/login_tab.xml" value="0.2463768115942029" />
-        <entry key="app/src/main/res/layout/login_tab_fragment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/login_tab_fragment.xml" value="0.2" />
         <entry key="app/src/main/res/layout/menu_group.xml" value="0.1" />
         <entry key="app/src/main/res/layout/nested_item.xml" value="0.16351318359375003" />
         <entry key="app/src/main/res/layout/place_order_items.xml" value="0.375" />
         <entry key="app/src/main/res/layout/res_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/shimmer_goal.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/shimmer_placeholder.xml" value="0.1" />
         <entry key="app/src/main/res/layout/signup.xml" value="0.2463768115942029" />
-        <entry key="app/src/main/res/layout/signup_tab_fragment.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/signup_tab_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.335" />
       </map>

@@ -9,5 +9,8 @@
     <string name="facebook_client_token">a49f9c5b45deb3c1ebf197d9531c444a</string>
     <string name="google_map_key">AIzaSyALJS5gpnaMCkMud6RpnelX-iCsKxAGWNQ</string>
     <string name="marker_title">Marker Title</string>
+    <string name="action_archive">Archive</string>
 
+    <string name="delete"><font color='white'>Delete</font></string>
+    <string name="save"><font color='white'>Save</font></string>
 </resources>

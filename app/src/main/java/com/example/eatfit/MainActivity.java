@@ -2,9 +2,11 @@ package com.example.eatfit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,7 +16,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -33,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
@@ -52,30 +57,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
 public class MainActivity extends AppCompatActivity {
     public NavigationBarView.OnItemSelectedListener selectedListener;
     public ChipNavigationBar bottomNavigationView;
 
     private RecyclerView recyclerView;
     private HomeAdapter homeAdapter;
-    NestedAdapter nestedAdapter;
     private List<HomeModel> modelList;
     String restaurantName;
     String tempName = "";
     Set<String> hash_Set = new HashSet<String>();
+ShimmerFrameLayout shimmerFrameLayout;
     List menuItems = new ArrayList<>();
     ParseUser currentUser = ParseUser.getCurrentUser();
 RecyclerView nestedRv;
      List list = new ArrayList<>();
-    List templist = new ArrayList<>();
+    List<HomeModel> templist = new ArrayList<>();
     private ViewGroup MainView;
-
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        shimmerFrameLayout = findViewById(R.id.shimmerLayout);
         bottomNavigationView = findViewById(R.id.bottom_navigator);
 
 
@@ -104,18 +111,47 @@ RecyclerView nestedRv;
 
         modelList = new ArrayList<>();
         getDataFromServer();
+        recyclerView.setVisibility(View.INVISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
+        Handler handler = new Handler();
+        handler.postDelayed(()->{
+            recyclerView.setVisibility(View.VISIBLE);
+            shimmerFrameLayout.stopShimmerAnimation();
+            shimmerFrameLayout.setVisibility(View.INVISIBLE);
+
+        }, 2000);
         prepareRV();
 
+        swipeRefreshLayout = findViewById(R.id.swipeContainer);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
 
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+
+    }
+
+    private void refresh() {
+         prepareRV();
+        getDataFromServer();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
 
     private void prepareRV() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         homeAdapter = new HomeAdapter(this, modelList);
+
         recyclerView.setAdapter(homeAdapter);
+
     }
 
     private void getDataFromServer() {
@@ -130,11 +166,16 @@ RecyclerView nestedRv;
                     for (ParseObject object:objects){
                         String restaurantName = object.getString("res_name");
                         menuItems= (object.getList("menu_items"));
+
                         if (!hash_Set.contains(restaurantName)) {
+
                             modelList.add(new HomeModel(restaurantName, menuItems));
                         }
+
                         hash_Set.add(restaurantName);
                     }query.orderByAscending("updatedAt");
+
+
                     homeAdapter.notifyDataSetChanged();
 
                 }
