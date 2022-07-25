@@ -147,6 +147,32 @@ Eatfit
 
 
 ### Networking
-- [Add list of network requests by screen ]
+- Home feed screen
+   => Read/GET query visits from logged in user r_visits table  
+   => Create/POST a new user
+ - Search screen
+    => GET map data for nearby restaurants
+  - Restaurant screen
+     =>Read/GET query list of menu items based on selected body/money goal
+ - Person screen
+    => GET logged in user data (f_name, l_name,... ) for editing purposes. 
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
+
+Project Plan (milestones)
+week 1 - login/sign up backend/frontend and bottom navigation to home, search and account screens with setup of back4app data models
+
+week 2- 4- Getting and orgaising data from from api into schema as well as working on gmaps for closeby restaurants,atms and movie theaters. merged objects from other api into main api to get meet user needs. Classified data based on user option selection (lose wight, bulk or save money). 
+
+week 4-week 5 - Organised items based on calorie/protein/count (high->low, or low>high) and enabled ordering function for each items
+
+
+**Android app requirements**
+gesture - fany Swipe to delete/save. Swipe left to delete with delete icon and right to save with save icon showed.
+library used: https://github.com/xabaras/RecyclerViewSwipeDecorator
+
+animation - login sliding animation
+
+ - expanding bottom navigation tab on click, library: https://github.com/ismaeldivita/chip-navigation-bar
+
+shimmering recycler view for home feed of restuarants: https://github.com/sharish/ShimmerRecyclerView
