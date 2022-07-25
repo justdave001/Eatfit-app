@@ -32,12 +32,14 @@ Eatfit
 * user can login
 * user can create an account
 * user can search for nearby restaurants
+* user can select goal based on chosen restaurant (lose weight, gain weight & save money)
 * user can favorite a restaurant
 
 **Optional Nice-to-have Stories**
 
-* user can get best item recommendations
-
+* user can get item recommendations
+* user can order individual items
+* user can undo deleted/saved items
 
 ### 2. Screen Archetypes
 
@@ -55,11 +57,20 @@ Eatfit
    * user can click on a restaurant and view best food items based on body/money goal selection
 
 * Profile
-   * user can edit profile details (name, password)
+   * user can edit profile details (name, password, display first and last nane)
    
-* Body/money goal
+* Detail 
+   *user can choose goal (body/money goal selection)
+ 
+*Goal
+   *user views a list of menu items with ordered list of their goals (e.g sees max calorie/protein/fat content on click of gain weight button)
+   *user can add items in recyclerview to cart and checkout items
+ 
+*Place Order Screen
+   *user can view a recyclerveiw of items in cart (showing image, name,price and quantity) as well as the total cost and place order
 
-
+*Favorites screen
+   *user can view a list of favorited items
 
 
 ### 3. Navigation
@@ -68,7 +79,7 @@ Eatfit
 
 * Home
 * Search
-* profile
+* Account
 
 **Flow Navigation** (Screen to Screen)
 
@@ -76,22 +87,21 @@ Eatfit
 * Login Screen
    => Home
    
-   
 * Registration Screen
-   => Home
+   => Search
    
- 
 * Search
-   => Restaurants
+   => Google map showing nearby restaurants
   
-
 * Restaurant 
    => Body/money goal options
   
 * Restaurant
      => Tailored menu items
+     
 * Profile
-     => profile info change and save.
+     => profile info change and save and favorites icon
+     
 
 
 ## Wireframes
