@@ -33,7 +33,7 @@ Eatfit
 * user can create an account
 * user can search for nearby restaurants
 * user can select goal based on chosen restaurant (lose weight, gain weight & save money)
-* user can favorite a restaurant
+* user can favorite an item
 
 **Optional Nice-to-have Stories**
 
