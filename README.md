@@ -122,6 +122,28 @@ Eatfit
  **menu items** String
  
 ### Models
+### Models
+
+**User**
+| property  |  type | description|
+| -------- | -------- | -------- |
+| object_id     | int     | unique obj id for each user    |
+| f_name    | String     | user first name    |
+| l_name     | String     | user last name   |
+| email     | String     | user email    |
+| favorites     | Array     | user favorites    |
+| password     | String     | user password   |
+| login_method     | bool     | either through google/facebook or app login  method   |
+
+
+**Restaurant**
+| property | type | description |
+| -------- | -------- | -------- |
+| restaurant_id |    int  | unique id for each restaurant     |
+| menu_items |    Array  | List of all menu items offered by restaurant    |
+|res_name |    String  | name of restaurant    |
+|Timestamp |    datetime  | data and time item was ordered by user    |
+
 
 
 ### Networking
