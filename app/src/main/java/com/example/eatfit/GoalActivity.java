@@ -135,7 +135,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         Request request = new StringRequest(Request.Method.GET, BASE_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-//                String res_name = getIntent().getStringExtra("restaurant_name");
+
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray rest = jsonObject.getJSONArray("restaurants");
@@ -284,16 +284,6 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         queue.add(request);
 
 
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//               try {
-//                   JSONObject jsonObject = new JSONObject(response)
-//               }
-//
-//            }
-//        });
-
     }
 
     private void initRecyclerView() {
@@ -338,10 +328,8 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         for(Restaurant m : itemsInCartList) {
             totalItemInCart += m.getTotalInCart();
         }
-        Log.e("restaureanr", Integer.toString(restaurant.getTotalInCart()));
+     
 
-        Log.d("casrt", Integer.toString(totalItemInCart));
-        /*  buttonCheckout.setText("Checkout (" +totalItemInCart +") items");*/
     }
 
     @Override
@@ -356,7 +344,6 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
             for(Restaurant m : itemsInCartList) {
                 totalItemInCart = totalItemInCart + m.getTotalInCart();
             }
-//            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
         }
     }
 
@@ -369,7 +356,6 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
             for(Restaurant m : itemsInCartList) {
                 totalItemInCart = totalItemInCart + m.getTotalInCart();
             }
-//            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
         }
     }
 }
