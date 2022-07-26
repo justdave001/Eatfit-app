@@ -27,7 +27,7 @@ public class DetailsActivity extends AppCompatActivity {
     AppCompatButton gWeight;
     AppCompatButton sMoney;
     String cost;
-    final max_cost = "9999999999999999";
+    final String max_cost = "9999999999999999";
     Restaurant restaurant = new Restaurant();
     ChipNavigationBar bottomNavigationView;
     @Override
