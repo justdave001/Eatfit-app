@@ -39,7 +39,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_order_successful.xml" value="0.2609375" />
         <entry key="app/src/main/res/layout/activity_person.xml" value="0.21029205322265626" />
-        <entry key="app/src/main/res/layout/activity_place_order.xml" value="0.10127349853515624" />
+        <entry key="app/src/main/res/layout/activity_place_order.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_search.xml" value="0.30245666503906243" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/cart_action_item.xml" value="1.5" />

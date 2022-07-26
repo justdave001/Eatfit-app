@@ -62,12 +62,24 @@
             android:layout_marginBottom="05dp"
             android:hint="Enter your name"/>
 
-        <EditText android:id="@+id/inputAddress"
+        <EditText android:id="@+id/inputEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/inputName"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="05dp"
+            android:layout_marginBottom="05dp"
+            android:hint="Enter email"/>
+
+        <EditText android:id="@+id/inputAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inputEmail"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="05dp"
@@ -270,7 +282,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTotal"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:onClick="se"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

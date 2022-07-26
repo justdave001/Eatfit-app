@@ -1,19 +1,7 @@
 package com.example.eatfit;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,7 +10,14 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -30,16 +25,28 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
 
 public class PlaceOrderActivity extends AppCompatActivity {
 
-     EditText inputName, inputAddress, inputCity, inputState, inputZip,inputCardNumber, inputCardExpiry, inputCardPin ;
+     EditText inputName, inputEmail, inputAddress, inputCity, inputState, inputZip,inputCardNumber, inputCardExpiry, inputCardPin ;
      RecyclerView cartItemsRecyclerView;
     TextView tvSubtotalAmount, tvDeliveryChargeAmount, tvDeliveryCharge, tvTotalAmount, buttonPlaceYourOrder;
     private SwitchCompat switchDelivery;
     private boolean isDeliveryOn;
     PlaceOrderAdapter placeOrderAdapter;
+    String body;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         inputName = findViewById(R.id.inputName);
+        inputEmail = findViewById(R.id.inputEmail);
         inputAddress = findViewById(R.id.inputAddress);
         inputCity = findViewById(R.id.inputCity);
         inputState = findViewById(R.id.inputState);
@@ -76,6 +84,35 @@ public class PlaceOrderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onPlaceOrderButtonClick(restaurant);
                 List<Restaurant> add = restaurant.getMenus();
+                Log.d("purchase", restaurant.getMenus().toString());
+                String email = inputEmail.getText().toString();
+                body = "Hi " + inputName.getText().toString()+", "+ "thank you for your purchase at "
+                        +resname+". Ordered items are: ";
+                for (int i=0;i<=add.size()-1;i++){
+                       body += "\n" +"    "+ add.get(i).getName()+": "+ "$"+Double.toString(add.get(i).getCost());
+                }
+                String ending = inputCardNumber.getText().toString();
+                String substr=ending.substring(12,ending.length());
+                body += "\n"+"Total= "+tvTotalAmount.getText().toString();
+                body += "\n"+"paid with card info ending in: "+ substr;
+
+                String chooserTitle = "Eatfit";
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        try {
+                            GMailSender sender = new GMailSender("3atfit@gmail.com",
+                                    "tsivyypaphwkxgda");
+                            sender.sendMail(resname+" "+"Order Confirmation", body,
+                                    "Eatfit", email);
+                        } catch (Exception e) {
+                            Log.e("SendMail", e.getMessage(), e);
+                        }
+                    }
+
+                }).start();
+
 
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 ParseObject rname = new ParseObject("Restaurants");
