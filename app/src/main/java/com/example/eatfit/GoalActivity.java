@@ -147,7 +147,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
                             for (int j = 0; j < menu.length(); j++) {
                                 JSONObject items = menu.getJSONObject(j);
-                                if (items.has("calories") && items.getInt("calories")<=500 && items.getInt("fat") <= 35)  {
+                                if (items.has("calories") && items.getInt("calories")<700 && items.getInt("fat") < 60)  {
 
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
@@ -185,7 +185,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                             for (int j = 0; j < menu.length(); j++) {
 
                                 JSONObject items = menu.getJSONObject(j);
-                                if (items.has("calories") && items.getInt("calories")>=500 && items.getInt("fat") > 10 && items.getInt("protein") > 30)  {
+                                if (items.has("calories") && items.getInt("calories")>700 && items.getInt("fat") > 60 && items.getInt("protein") > 30)  {
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
                                     restt.add(items.getString("name"));

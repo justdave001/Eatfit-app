@@ -32,12 +32,14 @@ Eatfit
 * user can login
 * user can create an account
 * user can search for nearby restaurants
-* user can favorite a restaurant
+* user can select goal based on chosen restaurant (lose weight, gain weight & save money)
+* user can favorite an item
 
 **Optional Nice-to-have Stories**
 
-* user can get best item recommendations
-
+* user can get item recommendations
+* user can order individual items
+* user can undo deleted/saved items
 
 ### 2. Screen Archetypes
 
@@ -55,11 +57,20 @@ Eatfit
    * user can click on a restaurant and view best food items based on body/money goal selection
 
 * Profile
-   * user can edit profile details (name, password)
+   * user can edit profile details (name, password, display first and last nane)
    
-* Body/money goal
+* Detail 
+   *user can choose goal (body/money goal selection)
+ 
+*Goal
+   *user views a list of menu items with ordered list of their goals (e.g sees max calorie/protein/fat content on click of gain weight button)
+   *user can add items in recyclerview to cart and checkout items
+ 
+*Place Order Screen
+   *user can view a recyclerveiw of items in cart (showing image, name,price and quantity) as well as the total cost and place order
 
-
+*Favorites screen
+   *user can view a list of favorited items
 
 
 ### 3. Navigation
@@ -68,7 +79,7 @@ Eatfit
 
 * Home
 * Search
-* profile
+* Account
 
 **Flow Navigation** (Screen to Screen)
 
@@ -76,22 +87,21 @@ Eatfit
 * Login Screen
    => Home
    
-   
 * Registration Screen
-   => Home
+   => Search
    
- 
 * Search
-   => Restaurants
+   => Google map showing nearby restaurants
   
-
 * Restaurant 
    => Body/money goal options
   
 * Restaurant
      => Tailored menu items
+     
 * Profile
-     => profile info change and save.
+     => profile info change and save and favorites icon
+     
 
 
 ## Wireframes
@@ -112,9 +122,57 @@ Eatfit
  **menu items** String
  
 ### Models
+### Models
+
+**User**
+| property  |  type | description|
+| -------- | -------- | -------- |
+| object_id     | int     | unique obj id for each user    |
+| f_name    | String     | user first name    |
+| l_name     | String     | user last name   |
+| email     | String     | user email    |
+| favorites     | Array     | user favorites    |
+| password     | String     | user password   |
+| login_method     | bool     | either through google/facebook or app login  method   |
+
+
+**Restaurant**
+| property | type | description |
+| -------- | -------- | -------- |
+| restaurant_id |    int  | unique id for each restaurant     |
+| menu_items |    Array  | List of all menu items offered by restaurant    |
+|res_name |    String  | name of restaurant    |
+|Timestamp |    datetime  | data and time item was ordered by user    |
+
 
 
 ### Networking
-- [Add list of network requests by screen ]
+- Home feed screen
+   => Read/GET query visits from logged in user r_visits table  
+   => Create/POST a new user
+ - Search screen
+    => GET map data for nearby restaurants
+  - Restaurant screen
+     =>Read/GET query list of menu items based on selected body/money goal
+ - Person screen
+    => GET logged in user data (f_name, l_name,... ) for editing purposes. 
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
+
+Project Plan (milestones)
+week 1 - login/sign up backend/frontend and bottom navigation to home, search and account screens with setup of back4app data models
+
+week 2- 4- Getting and orgaising data from from api into schema as well as working on gmaps for closeby restaurants,atms and movie theaters. merged objects from other api into main api to get meet user needs. Classified data based on user option selection (lose wight, bulk or save money). 
+
+week 4-week 5 - Organised items based on calorie/protein/count (high->low, or low>high) and enabled ordering function for each items
+
+
+**Android app requirements**
+gesture - fany Swipe to delete/save. Swipe left to delete with delete icon and right to save with save icon showed.
+library used: https://github.com/xabaras/RecyclerViewSwipeDecorator
+
+animation - login sliding animation
+
+ - expanding bottom navigation tab on click, library: https://github.com/ismaeldivita/chip-navigation-bar
+
+shimmering recycler view for home feed of restuarants: https://github.com/sharish/ShimmerRecyclerView
