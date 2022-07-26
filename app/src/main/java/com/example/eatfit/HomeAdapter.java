@@ -125,7 +125,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ItemViewHolder
                             }
 
                         });
-//                    list.remove(viewHolder.getAdapterPosition());
                         notifyDataSetChanged();
 
                         Snackbar.make(viewHolder.itemView,removee.toString(), Snackbar.LENGTH_LONG )
