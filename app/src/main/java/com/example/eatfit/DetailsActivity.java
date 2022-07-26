@@ -27,6 +27,7 @@ public class DetailsActivity extends AppCompatActivity {
     AppCompatButton gWeight;
     AppCompatButton sMoney;
     String cost;
+    final max_cost = "9999999999999999";
     Restaurant restaurant = new Restaurant();
     ChipNavigationBar bottomNavigationView;
     @Override
@@ -95,7 +96,7 @@ public class DetailsActivity extends AppCompatActivity {
                 String resname = marker.getText().toString();
                 if (!money.getText().toString().equals("")){
                     cost = Integer.toString(Integer.parseInt(money.getText().toString())*100);}else {
-                    cost="9999999999999999";
+                    cost=max_cost;
                 }
                 Intent i = new Intent(DetailsActivity.this, GoalActivity.class);
                 i.putExtra("restaurant_name", resname);
