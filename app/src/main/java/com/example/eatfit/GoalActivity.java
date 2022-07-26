@@ -103,8 +103,8 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
             shimmerFrameLayout.setVisibility(View.INVISIBLE);
 
         }, 3000);
-        ActionBar actionBar = getSupportActionBar();
         String resname = getIntent().getStringExtra("restaurant_name");
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(resname);
         actionBar.setDisplayHomeAsUpEnabled(true);
         Restaurant restaurant = new Restaurant();
@@ -119,7 +119,6 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                 Intent i = new Intent(GoalActivity.this, PlaceOrderActivity.class);
                 i.putExtra("resname", resname);
                 i.putExtra("data", restaurant);
-                Log.d("resst",restaurant.getMenus().toString());
                 startActivity(i);
 
             }
