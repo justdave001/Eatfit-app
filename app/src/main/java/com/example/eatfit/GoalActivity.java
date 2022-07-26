@@ -81,6 +81,9 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
     ShimmerFrameLayout shimmerFrameLayout;
     int temp=0;
     List prices = new ArrayList<>();
+    final int min_calories = 500;
+    final int min_fat = 58;
+    final int min_protein = 30;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,7 +149,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
                             for (int j = 0; j < menu.length(); j++) {
                                 JSONObject items = menu.getJSONObject(j);
-                                if (items.has("calories") && items.getInt("calories")<700 && items.getInt("fat") < 60)  {
+                                if (items.has("calories") && items.getInt("calories")<min_calories && items.getInt("fat") < min_fat)  {
 
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
@@ -184,7 +187,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                             for (int j = 0; j < menu.length(); j++) {
 
                                 JSONObject items = menu.getJSONObject(j);
-                                if (items.has("calories") && items.getInt("calories")>700 && items.getInt("fat") > 60 && items.getInt("protein") > 30)  {
+                                if (items.has("calories") && items.getInt("calories")>min_calories && items.getInt("fat") > min_fat && items.getInt("protein") > min_protein)  {
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
                                     restt.add(items.getString("name"));
