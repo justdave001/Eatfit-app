@@ -31,7 +31,6 @@ public class SignupTabFragment extends Fragment {
         f_name = root.findViewById(R.id.f_name);
         l_name = root.findViewById(R.id.l_name);
         signup_pass = root.findViewById(R.id.signup_pass);
-//        signup_pass2 = root.findViewById(R.id.signup_pass2);
         signupBtn = root.findViewById(R.id.signupBtn);
         firstName = root.findViewById(R.id.firstName);
 
@@ -71,21 +70,21 @@ public class SignupTabFragment extends Fragment {
         f_name.setTranslationX(800);
         l_name.setTranslationX(800);
         signup_pass.setTranslationX(800);
-//        signup_pass2.setTranslationX(800);
+
         signupBtn.setTranslationX(800);
 
         username.setAlpha(o);
         f_name.setAlpha(o);
         l_name.setAlpha(o);
         signup_pass.setAlpha(o);
-//        signup_pass2.setAlpha(o);
+
         signupBtn.setAlpha(o);
 
         username.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(300).start();
         f_name.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
         l_name.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(500).start();
         signup_pass.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
-//        signup_pass2.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
+
         signupBtn.animate().translationX(0).alpha(1).setDuration(800).setStartDelay(700).start();
         return root;
 }}
