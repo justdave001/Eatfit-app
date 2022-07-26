@@ -166,45 +166,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>  {
             addToCartButton = itemView.findViewById(R.id.addToCartButton);
             buttonCheckout = itemView.findViewById(R.id.buttonCheckout);
 
-
-//            addRes.setOnClickListener(
-//                    new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            pos = getAdapterPosition();
-//                            ParseUser currentUser = ParseUser.getCurrentUser();
-//                            ParseObject rname = new ParseObject("Restaurants");
-//                            rname.put("user", currentUser);
-//                            rname.put("res_name", restaurant_name);
-//                            rname.addUnique("menu_items", restt.get(pos));
-//                            rname.saveInBackground();
-//
-//                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Restaurants");
-//                            query.whereEqualTo("user", currentUser);
-//                            query.whereEqualTo("res_name", restaurant_name);
-//
-//
-//                            query.findInBackground(new FindCallback<ParseObject>() {
-//                                @Override
-//                                public void done(List<ParseObject> objects, ParseException e) {
-//                                    if (e==null){
-//                                        for (ParseObject rname:objects){
-//                                            if (rname.getString("res_name").equals(restaurant_name)
-//                                         ) {
-//                                                rname.addUnique("menu_items", restt.get(pos));
-//                                                rname.saveInBackground();
-//                                            }
-//                                        }
-//
-//                                    }
-//
-//                                }
-//
-//                            });
-//
-//                        }
-//                    }
-//            );
         }
 
 
