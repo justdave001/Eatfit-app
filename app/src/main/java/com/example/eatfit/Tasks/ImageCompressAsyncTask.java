@@ -7,8 +7,8 @@ import android.util.Base64;
 import android.util.Log;
 
 
-import com.example.eatfit.ChatActivity;
-import com.example.eatfit.ChatMainActivity;
+import com.example.eatfit.Activities.ChatActivity;
+import com.example.eatfit.Activities.ChatMainActivity;
 import com.example.eatfit.Messages.MessageObject;
 import com.example.eatfit.R;
 

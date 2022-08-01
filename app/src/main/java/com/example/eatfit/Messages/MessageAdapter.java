@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eatfit.R;
-import com.example.eatfit.ChatMainActivity;
+import com.example.eatfit.Activities.ChatMainActivity;
 
 import java.util.ArrayList;
 import java.util.Objects;

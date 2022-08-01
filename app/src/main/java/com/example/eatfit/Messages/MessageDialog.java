@@ -7,9 +7,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 
-import com.example.eatfit.ChatActivity;
+import com.example.eatfit.Activities.ChatActivity;
+import com.example.eatfit.Activities.ChatMainActivity;
 import com.example.eatfit.R;
-import com.example.eatfit.ChatMainActivity;
+
 import com.example.eatfit.R;
 
 public class MessageDialog extends DialogFragment {

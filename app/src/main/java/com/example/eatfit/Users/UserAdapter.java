@@ -13,8 +13,8 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eatfit.ChatActivity;
-import com.example.eatfit.ChatMainActivity;
+import com.example.eatfit.Activities.ChatActivity;
+import com.example.eatfit.Activities.ChatMainActivity;
 
 import com.example.eatfit.R;
 import com.tomergoldst.tooltips.ToolTip;
