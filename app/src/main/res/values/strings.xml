@@ -24,7 +24,7 @@
     <string name="select_avatar_colour">Select Avatar Colour</string>
     <string name="welcome_message">Go out with people nearby!</string>
     <string name="error_empty_username">Please enter or generate a username before joining the chat</string>
-    <string name="error_empty_message">Please enter a message and try again</string>
+    <string name="error_empty_message">Can\'t send an empty text buddy</string>
     <string name="message_text_entry_field_hint">Type a message</string>
     <string name="message_send_button_description">Send Message</string>
     <string name="message_avatar_sent_description">Your Avatar</string>
@@ -41,9 +41,9 @@
     <string name="message_image_send_in_progress">Sending message in the background. Larger images will take longer to be sent</string>
 
     <string-array name="animals">
-        <item>Armadillo</item>
-        <item>Buffalo</item>
-        <item>Cheetah</item>
+        <item>Kumalala</item>
+        <item>Savesta</item>
+        <item>Quandaledingle</item>
         <item>Dingo</item>
         <item>Eagle</item>
         <item>Ferret</item>
@@ -53,7 +53,7 @@
         <item>Jaguar</item>
         <item>Kangaroo</item>
         <item>Llama</item>
-        <item>Monkey</item>
+        <item>Erection</item>
         <item>Newt</item>
         <item>Orangutan</item>
         <item>Penguin</item>
@@ -77,7 +77,7 @@
         <item>Clever</item>
         <item>Clean</item>
         <item>Fancy</item>
-        <item>Obedient</item>
+        <item>Hot</item>
         <item>Brave</item>
         <item>Bewildered</item>
         <item>Clumsy</item>

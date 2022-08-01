@@ -55,9 +55,6 @@ public class ChatMainActivity extends AppCompatActivity {
         // Set up the viw and toolbar
         setContentView(R.layout.activity_chat_main);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
         // Get the main context
         mainContext = getApplicationContext();
 

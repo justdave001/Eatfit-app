@@ -42,6 +42,7 @@ import com.parse.SaveCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -80,6 +81,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
     String restaurant_name;
     ShimmerFrameLayout shimmerFrameLayout;
     int temp=0;
+    TextView itemCount;
     List prices = new ArrayList<>();
 
     @Override
@@ -91,9 +93,11 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         shimmerFrameLayout = findViewById(R.id.shimmerLay);
         buttonCheckout = findViewById(R.id.buttonCheckout);
         restaurantList =  new ArrayList<>();
-
+        itemCount=findViewById(R.id.itemCount);
 
         extractRestaurants();
+
+        itemCount.setVisibility(View.INVISIBLE);
         rvItems.setVisibility(View.INVISIBLE);
         shimmerFrameLayout.startShimmerAnimation();
         Handler handler = new Handler();
@@ -338,10 +342,10 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         for(Restaurant m : itemsInCartList) {
             totalItemInCart += m.getTotalInCart();
         }
-        Log.e("restaureanr", Integer.toString(restaurant.getTotalInCart()));
-
-        Log.d("casrt", Integer.toString(totalItemInCart));
-        /*  buttonCheckout.setText("Checkout (" +totalItemInCart +") items");*/
+        if (totalItemInCart!=0) {
+            itemCount.setVisibility(View.VISIBLE);
+            itemCount.setText(Integer.toString(totalItemInCart));
+        }else{itemCount.setVisibility(View.INVISIBLE);}
     }
 
     @Override
@@ -356,7 +360,10 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
             for(Restaurant m : itemsInCartList) {
                 totalItemInCart = totalItemInCart + m.getTotalInCart();
             }
-//            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+            if (totalItemInCart!=0) {
+                itemCount.setVisibility(View.VISIBLE);
+                itemCount.setText(Integer.toString(totalItemInCart));
+            }else{itemCount.setVisibility(View.INVISIBLE);}
         }
     }
 
@@ -369,7 +376,10 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
             for(Restaurant m : itemsInCartList) {
                 totalItemInCart = totalItemInCart + m.getTotalInCart();
             }
-//            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+            if (totalItemInCart!=0) {
+                itemCount.setVisibility(View.VISIBLE);
+                itemCount.setText(Integer.toString(totalItemInCart));
+            }else{itemCount.setVisibility(View.INVISIBLE);}
         }
     }
 }
