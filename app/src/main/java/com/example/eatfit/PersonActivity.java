@@ -2,17 +2,24 @@ package com.example.eatfit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -56,10 +63,49 @@ public class PersonActivity extends AppCompatActivity {
     EditText etPassword;
     Button updateBtn;
     ImageView imgPhoto;
-    public String mCurrentPhotoPath;
     public File cameraImageFile;
     TextView userName;
     ImageView savedIcon;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    String name;
+    private Uri mMediaUri;
+     String mCurrentPhotoPath;
+    private Button btnUploadImage;
+    private TextView mTextView;
+    public String path;
+    ImageView chatButton;
+
+    @Override
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == PersonActivity.RESULT_OK) {
+
+            if (requestCode == RESULT_LOAD_GALLERY_IMAGE && null != data) {
+                Uri selectedImage = data.getData();
+
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                mCurrentPhotoPath = cursor.getString(columnIndex);
+                path = mCurrentPhotoPath;
+                cursor.close();
+
+            } else if (requestCode == RESULT_LOAD_CAMERA_IMAGE) {
+                 mCurrentPhotoPath = cameraImageFile.getAbsolutePath();
+
+            }
+
+            File image = new File(mCurrentPhotoPath);
+
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+            imgPhoto.setImageBitmap(bitmap);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +122,26 @@ public class PersonActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         updateBtn = findViewById(R.id.updateBtn);
         userName = findViewById(R.id.userName);
-        String name = currentUser.getString("f_name")+
-               " "+ currentUser.getString("l_name");
+        name = currentUser.getString("f_name")+
+                " "+ currentUser.getString("l_name");
+
+        chatButton = findViewById(R.id.chatButton);
+        swipeRefreshLayout = findViewById(R.id.swipeContain);
+        imgPhoto.setImageDrawable(getResources().getDrawable(R.drawable.david));
+
+        imgPhoto.setOnClickListener(chooseImageListener);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+
+
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         userName.setText(name);
         savedIcon.setOnClickListener(new View.OnClickListener() {
@@ -109,87 +173,76 @@ public class PersonActivity extends AppCompatActivity {
 
         });
 
-        imgPhoto.setOnClickListener(chooseImageListener);
-//        imgPhoto.setOnClickListener(uploadListener);
-
-            updateBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String username = etUsername.getText().toString();
-                    String firstname = etFirstname.getText().toString();
-                    String lastname = etLastname.getText().toString();
-                    String password = etPassword.getText().toString();
-
-
-                    if (!username.isEmpty()) {
-                        currentUser.put("username", username);
-                    }
-                    if (!firstname.isEmpty()) {
-                        currentUser.put("f_name", firstname);
-                    }
-                    if (!lastname.isEmpty()) {
-                        currentUser.put("l_name", lastname);
-                    }
-                    if (!password.isEmpty()) {
-                        currentUser.put("password", password);
-                    }
-
-
-                    currentUser.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            setProgressBarIndeterminateVisibility(false);
-                            if (e == null) {
-                                Toast.makeText(PersonActivity.this, "user saved!", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                    });
-                }
-            });
-
-
-
-
-            logout = findViewById(R.id.logout);
-            logout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ParseUser.logOut();
-                    Intent i = new Intent(PersonActivity.this, LoginActivity.class);
-                    startActivity(i);
-                }
-            });
-
-        }
+    chatButton.setOnClickListener(new View.OnClickListener() {
     @Override
-    public void onActivityResult (int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == PersonActivity.RESULT_OK) {
-
-            if (requestCode == RESULT_LOAD_GALLERY_IMAGE && null != data) {
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-                Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                mCurrentPhotoPath = cursor.getString(columnIndex);
-                cursor.close();
-
-            } else if (requestCode == RESULT_LOAD_CAMERA_IMAGE) {
-                mCurrentPhotoPath = cameraImageFile.getAbsolutePath();
-
-            }
-
-            File image = new File(mCurrentPhotoPath);
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
-            imgPhoto.setImageBitmap(bitmap);
-        }
+    public void onClick(View view) {
+        Intent i = new Intent(getApplicationContext(), ChatMainActivity.class);
+        startActivity(i);
     }
+});
+
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String username = etUsername.getText().toString();
+                String firstname = etFirstname.getText().toString();
+                String lastname = etLastname.getText().toString();
+                String password = etPassword.getText().toString();
+
+
+                if (!username.isEmpty()) {
+                    currentUser.put("username", username);
+                    etUsername.setText("");
+                }
+                if (!firstname.isEmpty()) {
+                    currentUser.put("f_name", firstname);
+                    etFirstname.setText("");
+                }
+                if (!lastname.isEmpty()) {
+                    currentUser.put("l_name", lastname);
+                    etLastname.setText("");
+                }
+                if (!password.isEmpty()) {
+                    currentUser.put("password", password);
+                    etPassword.setText("");
+                }
+
+
+                currentUser.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        setProgressBarIndeterminateVisibility(false);
+                        if (e == null) {
+                            Toast.makeText(PersonActivity.this, "user saved!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+            }
+        });
+
+
+
+
+        logout = findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                Intent i = new Intent(PersonActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+
+    }
+    private void refresh() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        name = currentUser.getString("f_name")+
+                " "+ currentUser.getString("l_name");
+        userName.setText(name);
+    }
+
+
     public File createImageFile () throws IOException {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -219,52 +272,7 @@ public class PersonActivity extends AppCompatActivity {
         }
     };
 
-    View.OnClickListener uploadListener =  new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
 
-            byte[] image = null;
-
-            try {
-                image = readInFile(mCurrentPhotoPath);
-            }
-            catch(Exception e) {
-                e.printStackTrace();
-
-            }
-
-            // Create the ParseFile
-            ParseFile file = new ParseFile("picturePath", image);
-            // Upload the image into Parse Cloud
-            file.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if(e!=null){
-                        Toast.makeText(PersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            });
-
-            ParseObject imgupload = new ParseObject("User");
-
-            imgupload.put("Image", "picturePath");
-
-            imgupload.put("ImageFile", file);
-
-            imgupload.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if(e==null){
-
-                    }else {
-                        Toast.makeText(PersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
-        }
-    };
 
     public void dialogChooseFrom(){
 
@@ -280,6 +288,52 @@ public class PersonActivity extends AppCompatActivity {
 
                     Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(galleryIntent, RESULT_LOAD_GALLERY_IMAGE);
+
+                    byte[] image=null;
+
+                    try {
+
+                        image = readInFile(path);
+                    }
+                    catch(Exception e) {
+
+                        e.printStackTrace();
+
+                    }
+
+                    // Create the ParseFile
+                    ParseFile file = new ParseFile("picturePath", image);
+                    // Upload the image into Parse Cloud
+
+                    file.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e!=null){
+                                Log.d("cam", e.getMessage());
+                          //      Toast.makeText(PersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+
+                    ParseObject imgupload = new ParseObject("User");
+
+                    imgupload.put("ImagePath", "picturePath");
+
+                    imgupload.put("ImageFile", file);
+
+                    imgupload.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e==null){
+
+                            }else {
+
+                          //      Toast.makeText(PersonActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
 
                 } else {
 
@@ -301,24 +355,29 @@ public class PersonActivity extends AppCompatActivity {
         chooseDialog.show();
     }
 
-    public byte[] readInFile(String path) throws IOException {
 
+
+
+
+    private byte[] readInFile(String path) throws IOException {
+        // TODO Auto-generated method stub
         byte[] data = null;
         File file = new File(path);
-        InputStream input_stream = new BufferedInputStream(new FileInputStream(file));
+        InputStream input_stream = new BufferedInputStream(new FileInputStream(
+                file));
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         data = new byte[16384]; // 16K
         int bytes_read;
-
         while ((bytes_read = input_stream.read(data, 0, data.length)) != -1) {
             buffer.write(data, 0, bytes_read);
         }
-
         input_stream.close();
         return buffer.toByteArray();
-    }
 
+    }
 }
+
+
 
 
 

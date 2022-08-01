@@ -22,7 +22,10 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParseUser;
 
 import java.util.Arrays;
 
@@ -57,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         facebook1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(LoginActivity.this, FacebookAuth.class);
                 startActivity(i);
             }

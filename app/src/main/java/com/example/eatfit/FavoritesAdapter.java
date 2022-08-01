@@ -32,6 +32,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<com.example.eatfit.Fa
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.mTextView.setText(mList.get(position));
 
+
+
     }
 
     @Override

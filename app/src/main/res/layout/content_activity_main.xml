@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin_8dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.eatfit.ChatMainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <!--Welcome text-->
+    <TextView
+        android:id="@+id/welcome_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/welcome_message"
+        android:textSize="@dimen/text_title"
+        android:layout_above="@+id/username_field"
+        android:layout_marginBottom="@dimen/activity_vertical_margin_48dp"
+        />
+
+    <!--UserName entry field-->
+    <EditText
+        android:id="@+id/username_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapWords"
+        android:hint="@string/username"
+        android:layout_toLeftOf="@+id/button_username_generate"
+        android:layout_above="@+id/avatar_colour_title"
+        android:layout_marginBottom="@dimen/activity_vertical_margin_32dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin_32dp"
+        android:layout_marginRight="8dp"
+        />
+
+    <!--Button to generate a random username-->
+    <ImageButton
+        android:id="@+id/button_username_generate"
+        android:layout_width="@dimen/button_circular_40dp"
+        android:layout_height="@dimen/button_circular_40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/username_field"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin_32dp"
+        android:src="@drawable/ic_loop_light"
+        android:background="@drawable/bg_button_circle"
+        android:contentDescription="@string/username_generate_button_description"
+        />
+
+    <!--Title for the avatar colour picker-->
+    <TextView
+        android:id="@+id/avatar_colour_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/username_field"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin_4dp"
+        android:text="@string/select_avatar_colour"
+        android:textSize="@dimen/text_title"
+        />
+
+    <!--Button to pick the avatar colour to be used in the chat-->
+    <ImageButton
+        android:id="@+id/button_avatar_colour_picker"
+        android:layout_width="@dimen/button_circular_40dp"
+        android:layout_height="@dimen/button_circular_40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/avatar_colour_title"
+        android:layout_marginRight="@dimen/activity_horizontal_margin_32dp"
+        android:src="@drawable/ic_avatar_circle_light"
+        android:background="@drawable/bg_button_circle_colour_picker"
+        android:contentDescription="@string/select_avatar_colour"
+        />
+
+    <!--Button to enter the chat, and start the Nearby API-->
+    <Button
+        android:id="@+id/button_enter_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatar_colour_title"
+        android:layout_marginTop="@dimen/activity_vertical_margin_32dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/action_enter_chat"
+        android:textColor="@color/textLight"
+        android:background="@drawable/bg_button"
+        />
+
+</RelativeLayout>

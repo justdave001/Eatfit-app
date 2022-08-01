@@ -86,15 +86,18 @@ public class PlaceOrderActivity extends AppCompatActivity {
                 List<Restaurant> add = restaurant.getMenus();
                 Log.d("purchase", restaurant.getMenus().toString());
                 String email = inputEmail.getText().toString();
-                body = "Hi " + inputName.getText().toString()+", "+ "thank you for your purchase at "
+                body = "Hi " +inputName.getText().toString()+", "+ "\n"+"\n"+"\n"+
+                        "Thank you for your purchase at "
                         +resname+". Ordered items are: ";
                 for (int i=0;i<=add.size()-1;i++){
-                       body += "\n" +"    "+ add.get(i).getName()+": "+ "$"+Double.toString(add.get(i).getCost());
+                       body += "\n" +"    "+ add.get(i).getName()+": "+ "$"+add.get(i).getCost()+" X"+
+                               add.get(i).getTotalInCart();
                 }
                 String ending = inputCardNumber.getText().toString();
                 String substr=ending.substring(12,ending.length());
-                body += "\n"+"Total= "+tvTotalAmount.getText().toString();
-                body += "\n"+"paid with card info ending in: "+ substr;
+                body += "\n"+"Total: "+tvTotalAmount.getText().toString();
+                body += "\n";
+                body += "\n"+"paid for with card info ending in: "+ substr;
 
                 String chooserTitle = "Eatfit";
                 new Thread(new Runnable() {
@@ -144,6 +147,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
                     }
 
                 });
+
             }
         });
 
@@ -206,7 +210,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         }else if(isDeliveryOn && TextUtils.isEmpty(inputState.getText().toString())) {
             inputState.setError("Please enter zip ");
             return;
-        }else if( TextUtils.isEmpty(inputCardNumber.getText().toString()) || inputCardNumber.getText().length() <16){
+        }else if( TextUtils.isEmpty(inputCardNumber.getText().toString()) || inputCardNumber.getText().length() !=16){
             inputCardNumber.setError("Invalid card number ");
             return;
         }else if( TextUtils.isEmpty(inputCardExpiry.getText().toString())) {
@@ -216,6 +220,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
             inputCardPin.setError("Please enter card pin/cvv ");
             return;
         }
+
         //start success activity..
         String resname = getIntent().getStringExtra("resname");
         Intent i = new Intent(PlaceOrderActivity.this, OrderSuccessfulActivity.class);

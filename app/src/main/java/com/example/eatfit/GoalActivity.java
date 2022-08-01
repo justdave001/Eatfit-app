@@ -78,9 +78,11 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
     List<Restaurant> menuList;
     Restaurant restaurant;
     String restaurant_name;
+    TextView itemCount;
     ShimmerFrameLayout shimmerFrameLayout;
     int temp=0;
     List prices = new ArrayList<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,10 +92,12 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         rvItems = findViewById(R.id.rvItems);
         shimmerFrameLayout = findViewById(R.id.shimmerLay);
         buttonCheckout = findViewById(R.id.buttonCheckout);
+        itemCount = findViewById(R.id.itemCount);
         restaurantList =  new ArrayList<>();
 
 
         extractRestaurants();
+        itemCount.setVisibility(View.INVISIBLE);
         rvItems.setVisibility(View.INVISIBLE);
         shimmerFrameLayout.startShimmerAnimation();
         Handler handler = new Handler();
@@ -147,7 +151,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                             JSONArray menu = jsonObject1.getJSONArray("menu_item_list");
                             for (int j = 0; j < menu.length(); j++) {
                                 JSONObject items = menu.getJSONObject(j);
-                                if (items.has("calories") && items.getInt("calories")<700 && items.getInt("fat") < 60)  {
+                                if (items.has("calories") && items.getInt("calories")<500 && items.getInt("fat") < 60)  {
 
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
@@ -185,7 +189,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                             for (int j = 0; j < menu.length(); j++) {
 
                                 JSONObject items = menu.getJSONObject(j);
-                                if (items.has("calories") && items.getInt("calories")>700 && items.getInt("fat") > 60 && items.getInt("protein") > 30)  {
+                                if (items.has("calories") && items.getInt("calories")>500 )  {
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
                                     restt.add(items.getString("name"));
@@ -226,7 +230,7 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
                             for (int j = 0; j < menu.length(); j++) {
 
                                 JSONObject items = menu.getJSONObject(j);
-                                if (items.has("price") && items.getInt("price")<= Integer.parseInt(getIntent().getStringExtra("cost_amt")))  {
+                                if (items.has("price") && items.getInt("price")!=0&& items.getInt("price")<= Integer.parseInt(getIntent().getStringExtra("cost_amt")))  {
 
                                     Restaurant restaurant = new Restaurant();
                                     restaurant.setName(items.getString("name"));
@@ -284,16 +288,6 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         queue.add(request);
 
 
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//               try {
-//                   JSONObject jsonObject = new JSONObject(response)
-//               }
-//
-//            }
-//        });
-
     }
 
     private void initRecyclerView() {
@@ -338,10 +332,9 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
         for(Restaurant m : itemsInCartList) {
             totalItemInCart += m.getTotalInCart();
         }
-        Log.e("restaureanr", Integer.toString(restaurant.getTotalInCart()));
 
-        Log.d("casrt", Integer.toString(totalItemInCart));
-        /*  buttonCheckout.setText("Checkout (" +totalItemInCart +") items");*/
+       itemCount.setVisibility(View.VISIBLE);
+        itemCount.setText(Integer.toString(totalItemInCart));
     }
 
     @Override
@@ -356,7 +349,8 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
             for(Restaurant m : itemsInCartList) {
                 totalItemInCart = totalItemInCart + m.getTotalInCart();
             }
-//            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+            itemCount.setVisibility(View.VISIBLE);
+            itemCount.setText(Integer.toString(totalItemInCart));
         }
     }
 
@@ -369,7 +363,13 @@ public class GoalActivity extends AppCompatActivity implements ItemAdapter.MenuL
             for(Restaurant m : itemsInCartList) {
                 totalItemInCart = totalItemInCart + m.getTotalInCart();
             }
-//            buttonCheckout.setText("Checkout (" +totalItemInCart +") items");
+            if (totalItemInCart!=0){
+                itemCount.setVisibility(View.VISIBLE);
+                itemCount.setText(Integer.toString(totalItemInCart));
+            }else {
+                itemCount.setVisibility(View.INVISIBLE);
+            }
+
         }
     }
 }
