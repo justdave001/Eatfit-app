@@ -15,7 +15,7 @@
     <string name="save"><font color='white'>Save</font></string>
 
     <string name="action_settings">Settings</string>
-    <string name="nearby_subscription_success">Connected successfully.</string>
+    <string name="nearby_subscription_success">Connected!</string>
     <string name="nearby_publish_message_failed">Could not publish message.</string>
     <string name="nearby_subscription_failed">Could not subscribe to chat.</string>
     <string name="username">Username</string>
@@ -31,7 +31,7 @@
     <string name="message_avatar_received_description">Sender\'s Avatar</string>
     <string name="user_avatar_content_description">User\'s Avatar</string>
     <string name="dialog_messages_ephemeral_positive_action">OK</string>
-    <string name="dialog_messages_ephemeral_body">The messages you send in this chat aren\'t persistent and will disappear shortly after you leave the app, or turn off your screen</string>
+    <string name="dialog_messages_ephemeral_body">The messages you send in this chat are ephemeral and will disappear shortly if you leave the app, or turn off your screen</string>
     <string name="dialog_messages_ephemeral_negative_action">Don\'t Show Again</string>
     <string name="message_emoji_button_description">Choose emoticon</string>
     <string name="message_body_image_description">Message Image</string>

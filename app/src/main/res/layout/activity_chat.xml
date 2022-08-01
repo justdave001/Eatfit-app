@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/messageTextField"
-    tools:context="com.example.eatfit.ChatActivity">
+    tools:context="com.example.eatfit.Activities.ChatActivity">
 
     <!--The RecyclerView containing the user's currently in the chat-->
     <androidx.recyclerview.widget.RecyclerView

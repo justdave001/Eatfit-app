@@ -33,35 +33,35 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ChatMainActivity"
+            android:name=".Activities.ChatMainActivity"
             android:exported="false"
-            android:parentActivityName=".PersonActivity"
+            android:parentActivityName=".Activities.PersonActivity"
             />
         <activity
-            android:name=".ChatActivity"
+            android:name=".Activities.ChatActivity"
             android:exported="false"
-            android:parentActivityName=".ChatMainActivity" />
+            android:parentActivityName=".Activities.ChatMainActivity" />
         <activity
-            android:name=".Favorites"
+            android:name=".Activities.Favorites"
             android:exported="false"
-            android:parentActivityName=".PersonActivity" />
+            android:parentActivityName=".Activities.PersonActivity" />
         <activity
-            android:name=".OrderSuccessfulActivity"
+            android:name=".Activities.OrderSuccessfulActivity"
             android:exported="false" />
         <activity
-            android:name=".PlaceOrderActivity"
+            android:name=".Activities.PlaceOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activities.SplashActivity"
             android:exported="false" />
         <activity
-            android:name=".GoalActivity"
+            android:name=".Activities.GoalActivity"
             android:exported="false"
-            android:parentActivityName=".GoalActivity" />
+          />
         <activity
-            android:name=".DetailsActivity"
+            android:name=".Activities.DetailsActivity"
             android:exported="false"
-            android:parentActivityName=".SearchActivity" />
+            android:parentActivityName=".Activities.SearchActivity" />
         <activity
             android:name=".FacebookAuth"
             android:exported="false" />
@@ -77,16 +77,16 @@
             android:value="AIzaSyAgr6E6USBFiR1CnWnFdJmkkh4De009XSA" />
 
         <activity
-            android:name=".PersonActivity"
+            android:name=".Activities.PersonActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".Activities.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
